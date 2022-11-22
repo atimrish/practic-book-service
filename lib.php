@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 function connect_db() {
@@ -181,4 +181,222 @@ function updateBook($id, $data) {
 
 }
 
+function getAuthors() {
+    $mysqli = connect_db();
+
+    $sql = "
+    SELECT * FROM `author`
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+function getAuthor($id) {
+    $mysqli = connect_db();
+
+    $sql = "
+    SELECT * FROM `author`
+    WHERE `id` = '$id'
+    ";
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+
+}
+
+function addAuthor($data) {
+    $mysqli = connect_db();
+
+    $surname = $data['surname'];
+    $name = $data['name'];
+    $patronymic = $data['patronymic'];
+
+    $sql = "
+    INSERT INTO `author`(surname, name, patronymic) 
+    VALUES ('$surname', '$name', '$patronymic')
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+
+    if ($result) {
+        $response = [
+            'status' => true,
+            'response_code' => 201
+        ];
+        http_response_code(201);
+    } else {
+        $response = [
+            'status' => false,
+            'response_code' => 500
+        ];
+        http_response_code(500);
+    }
+
+    mysqli_close($mysqli);
+
+    echo json_encode($response);
+}
+
+function updateAuthor($id, $data) {
+
+    $mysqli = connect_db();
+
+    $surname = $data['surname'];
+    $name = $data['name'];
+    $patronymic = $data['patronymic'];
+
+    $sql = "
+    UPDATE `author`
+    SET
+        `surname`='$surname',
+        `name`='$name',
+        `patronymic`='$patronymic'
+    WHERE `author`.`id` = '$id';
+    ";
+    mysqli_query($mysqli,$sql);
+
+    http_response_code(200);
+    $res = [
+        "status" => true,
+        "message" => "Post is update"
+    ];
+    mysqli_close($mysqli);
+
+    echo json_encode($res);
+}
+
+function deleteAuthor($id) {
+    $mysqli = connect_db();
+
+    $sql = "
+    DELETE FROM `author`
+    WHERE `id` = '$id'
+    ";
+    mysqli_query($mysqli, $sql);
+
+    $response = [
+        'status' => true,
+        'response_code' => 200
+    ];
+
+    http_response_code(200);
+    mysqli_close($mysqli);
+    echo json_encode($response);
+}
+
+function getUsers() {
+    $mysqli = connect_db();
+    $sql = "
+    SELECT * FROM `user`
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+function getUser($id) {
+    $mysqli = connect_db();
+    $sql = "
+    SELECT * FROM `user`
+    WHERE `id` = '$id'
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+function addUser($data) {
+    $mysqli = connect_db();
+
+    $surname = $data['surname'];
+    $name = $data['name'];
+    $patronymic = $data['patronymic'];
+    $login = $data['login'];
+    $password = md5($data['password']);
+    $is_admin = $data['is_admin'];
+
+    $sql = "
+    INSERT INTO `user`(surname, name, patronymic, login, password, is_admin) 
+    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin')
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+
+    if ($result) {
+        $response = [
+            'status' => true,
+            'response_code' => 201
+        ];
+        http_response_code(201);
+    } else {
+        $response = [
+            'status' => false,
+            'response_code' => 500
+        ];
+        http_response_code(500);
+    }
+
+    mysqli_close($mysqli);
+
+    echo json_encode($response);
+
+}
+
+function updateUser($id, $data) {
+    $mysqli = connect_db();
+
+    $surname = $data['surname'];
+    $name = $data['name'];
+    $patronymic = $data['patronymic'];
+
+    $sql = "
+    UPDATE `user`
+    SET
+        `surname`='$surname',
+        `name`='$name',
+        `patronymic`='$patronymic'
+    WHERE `user`.`id` = '$id';
+    ";
+    mysqli_query($mysqli,$sql);
+
+    http_response_code(200);
+    $res = [
+        "status" => true,
+        "message" => "Updated user"
+    ];
+    mysqli_close($mysqli);
+
+    echo json_encode($res);
+
+}
+
+function deleteUser($id) {
+    $mysqli = connect_db();
+
+    $sql = "
+    DELETE FROM `user`
+    WHERE `id` = '$id'
+    ";
+    mysqli_query($mysqli, $sql);
+    $response = [
+        'status' => true,
+        'response_code' => 200
+    ];
+    http_response_code(200);
+    mysqli_close($mysqli);
+    echo json_encode($response);
+}
 
