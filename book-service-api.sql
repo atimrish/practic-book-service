@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 21 2022 г., 14:21
+-- Время создания: Ноя 22 2022 г., 10:42
 -- Версия сервера: 8.0.29
 -- Версия PHP: 8.0.18
 
@@ -34,6 +34,14 @@ CREATE TABLE `author` (
   `patronymic` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
+--
+-- Дамп данных таблицы `author`
+--
+
+INSERT INTO `author` (`id`, `surname`, `name`, `patronymic`) VALUES
+(1, 'Дамбинов', 'Дамир', 'Ильдарович'),
+(2, 'Телькунов', 'Валентин', 'Сергеевич');
+
 -- --------------------------------------------------------
 
 --
@@ -48,8 +56,15 @@ CREATE TABLE `book` (
   `year_of_issue` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
   `author_id` varchar(60) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
   `genre_id` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
-  `rating` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
+  `rating` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8_general_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `book`
+--
+
+INSERT INTO `book` (`id`, `title`, `image`, `description`, `year_of_issue`, `author_id`, `genre_id`, `rating`) VALUES
+(3, 'rewrwe', 'test_2', 'test_2', '2022', '2', '1', NULL);
 
 -- --------------------------------------------------------
 
@@ -74,6 +89,15 @@ CREATE TABLE `genre` (
   `id` int UNSIGNED NOT NULL,
   `title` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `genre`
+--
+
+INSERT INTO `genre` (`id`, `title`) VALUES
+(1, 'Фэнтези'),
+(2, 'Хоррор'),
+(3, 'Драма');
 
 -- --------------------------------------------------------
 
@@ -119,7 +143,8 @@ ALTER TABLE `author`
 --
 ALTER TABLE `book`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_genre_book` (`genre_id`);
+  ADD KEY `FK_genre_book` (`genre_id`),
+  ADD KEY `FK_author_book` (`author_id`);
 
 --
 -- Индексы таблицы `comment`
@@ -139,7 +164,9 @@ ALTER TABLE `genre`
 -- Индексы таблицы `rating`
 --
 ALTER TABLE `rating`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `FK_book_rating` (`book_id`),
+  ADD KEY `FK_user_rating` (`user_id`);
 
 --
 -- Индексы таблицы `user`
@@ -155,13 +182,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `author`
 --
 ALTER TABLE `author`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `comment`
@@ -173,7 +200,7 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT для таблицы `genre`
 --
 ALTER TABLE `genre`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `rating`
