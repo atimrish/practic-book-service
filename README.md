@@ -28,3 +28,9 @@
 * POST http://practic-book-service/rating
 * PATCH http://practic-book-service/rating
 * DELETE http://practic-book-service/rating
+### Comments
+* GET http://practic-book-service/comments
+* GET http://practic-book-service/comments/{id}
+* POST http://practic-book-service/comments
+* PATCH http://practic-book-service/comments
+* DELETE http://practic-book-service/comments
