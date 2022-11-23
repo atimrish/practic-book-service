@@ -28,7 +28,6 @@ switch ($method) {
                 getBooks();
             } else {
                 $id = $a[1];
-
                 getBook($id);
             }
 
@@ -37,7 +36,6 @@ switch ($method) {
                 getAuthors();
             } else {
                 $id = $a[1];
-
                 getAuthor($id);
             }
 
@@ -48,6 +46,45 @@ switch ($method) {
                 $id = $a[1];
                 getUser($id);
             }
+        } else if ($a[0] === 'rating') {
+            $id = $a[2];
+            if (isset($id)) {
+                if ($a[1] === 'books') {
+                    getRatingByBookId($id);
+
+                } else if ($a[1] === 'users') {
+                    getRatingByUserId($id);
+
+                }
+            } else {
+                getAllRating();
+
+            }
+        } else if ($a[0] === 'comments') {
+            $id = $a[1];
+            if (empty($id)) {
+
+                $book_id = $_GET['book_id'];
+                $user_id = $_GET['user_id'];
+
+                if (!empty($book_id) || !empty($user_id)) {
+                    if (empty($book_id)) {
+                        getCommentByUserId($user_id);
+                    } else if (empty($user_id)) {
+                        getCommentByBookId($book_id);
+                    } else {
+                        getCommentByUserIdAndBookId($user_id, $book_id);
+                    }
+                } else {
+                    getComments();
+                }
+
+            }  else {
+                getCommentByCommentId($id);
+            }
+
+
+
         }
         break;
 
@@ -58,6 +95,10 @@ switch ($method) {
             addAuthor($_POST);
         } else if ($a[0] === 'users') {
             addUser($_POST);
+        } else if ($a[0] === 'rating') {
+            addRating($_POST);
+        } else if ($a[0] === 'comments') {
+            addComment($_POST);
         }
         break;
 
@@ -73,6 +114,10 @@ switch ($method) {
                 updateAuthor($id, $data);
             } else if ($a[0] === 'users') {
                 updateUser($id, $data);
+            } else if ($a[0] === 'rating') {
+                updateRating($data);
+            } else if ($a[0] === 'comments') {
+                updateComment($id, $data);
             }
 
         }
@@ -83,14 +128,24 @@ switch ($method) {
     case 'DELETE':
         $id = $a[1];
 
-        if (isset($id)) {
+        if (!empty($id)) {
             if ($a[0] === 'books') {
                 deleteBook($id);
             } else if ($a[0] === 'authors') {
                 deleteAuthor($id);
             } else if ($a[0] === 'users') {
                 deleteUser($id);
+            } else if ($a[0] === 'comments') {
+                deleteComment($id);
             }
+
+        } else {
+            if ($a[0] === 'rating') {
+                $data = file_get_contents('php://input');
+                $data = json_decode($data, true);
+                deleteRating($data);
+            }
+
 
         }
 
