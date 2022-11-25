@@ -31,6 +31,9 @@
 ### Comments
 * GET http://practic-book-service/comments
 * GET http://practic-book-service/comments/{id}
+* GET http://practic-book-service/comments?book_id={id}
+* GET http://practic-book-service/comments?user_id={id}
+* GET http://practic-book-service/comments?user_id={id}&book_id={id}
 * POST http://practic-book-service/comments
 * PATCH http://practic-book-service/comments
 * DELETE http://practic-book-service/comments

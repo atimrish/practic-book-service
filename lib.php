@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -95,7 +95,7 @@ function getBook($id) {
  * @param array $data
  * @return void
  */
-function addBook(array $data) {
+function addBook($data) {
     $mysqli = connect_db();
 
     $title = $data['title'];
@@ -110,7 +110,7 @@ function addBook(array $data) {
     VALUES ('$title', '$image', '$description', '$year_of_issue', '$author_id', '$genre_id');
     ";
 
-    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
 
     if ($result) {
         $response = [
@@ -385,14 +385,15 @@ function addUser($data) {
     $patronymic = $data['patronymic'];
     $login = $data['login'];
     $password = md5($data['password']);
-    $is_admin = $data['is_admin'];
+//    $is_admin = $data['is_admin'];
+    $avatar = $data['avatar'];
 
     $sql = "
-    INSERT INTO `user`(surname, name, patronymic, login, password, is_admin) 
-    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin')
+    INSERT INTO `user`(surname, name, patronymic, login, password, avatar) 
+    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$avatar')
     ";
 
-    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
 
     if ($result) {
         $response = [
@@ -446,6 +447,7 @@ function updateUser($id, $data) {
     echo json_encode($res);
 
 }
+
 
 /** Удаление пользователя по id
  * @param $id
@@ -649,7 +651,10 @@ function getComments() {
     echo json_encode($result);
 }
 
-
+/** Получение комментария по id книги
+ * @param $id
+ * @return void
+ */
 function getCommentByBookId($id) {
     $mysqli = connect_db();
     $sql = "
@@ -676,6 +681,10 @@ function getCommentByBookId($id) {
 
 }
 
+/** Получение комментария по id пользователя
+ * @param $id
+ * @return void
+ */
 function getCommentByUserId($id) {
     $mysqli = connect_db();
     $sql = "
@@ -701,6 +710,10 @@ function getCommentByUserId($id) {
     echo json_encode($result);
 }
 
+/** Получение комментария по его id
+ * @param $id
+ * @return void
+ */
 function getCommentByCommentId($id) {
     $mysqli = connect_db();
     $sql = "
@@ -726,6 +739,11 @@ function getCommentByCommentId($id) {
     echo json_encode($result);
 }
 
+/** Получение комментария по id пользователя и id книги
+ * @param $user_id
+ * @param $book_id
+ * @return void
+ */
 function getCommentByUserIdAndBookId($user_id, $book_id) {
     $mysqli = connect_db();
     $sql = "
@@ -752,6 +770,10 @@ function getCommentByUserIdAndBookId($user_id, $book_id) {
 
 }
 
+/** Добавление комментария
+ * @param $data
+ * @return void
+ */
 function addComment($data) {
     $user_id = $data['user_id'];
     $book_id = $data['book_id'];
@@ -783,6 +805,11 @@ function addComment($data) {
 }
 
 
+/** Изменение комментария
+ * @param $id
+ * @param $data
+ * @return void
+ */
 function updateComment($id, $data) {
 
     $mysqli = connect_db();
@@ -808,6 +835,10 @@ function updateComment($id, $data) {
 
 }
 
+/** Удаление комментария
+ * @param $id
+ * @return void
+ */
 function deleteComment($id) {
     $mysqli = connect_db();
     $sql = "
