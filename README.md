@@ -36,4 +36,4 @@
 * GET http://practic-book-service/comments?user_id={id}&book_id={id}
 * POST http://practic-book-service/comments
 * PATCH http://practic-book-service/comments
-* DELETE http://practic-book-service/comments
+* DELETE http://practic-book-service/comments/{id}

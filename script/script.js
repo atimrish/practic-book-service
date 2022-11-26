@@ -19,7 +19,22 @@
 // addAuthor();
 // addUser();
 // addRating();
-addComment();
+// addComment();
+
+
+// updateBook(5);
+// updateAuthor(2);
+// updateUser(1);
+// updateRating(1, 7);
+// updateComment(1);
+
+
+// deleteBook(5);
+// deleteAuthor(2);
+// deleteUser(1);
+// deleteRating(1,7);
+// deleteComment(2);
+
 
 async function getBooks() {
     try {
@@ -281,3 +296,147 @@ async function addComment() {
 
 }
 
+
+async function updateBook(id) {
+    let data = {
+        title: 'test-js',
+        image: 'test-js',
+        description: 'test-js',
+        year_of_issue: '2012',
+        author_id: '2',
+        genre_id: '4',
+        rating: '3'
+    }
+
+    let res = await fetch(`http://practic-book-service/books/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res)
+
+}
+
+
+async function updateAuthor(id) {
+    let data = {
+        surname: 'test-js',
+        name: 'test-js',
+        patronymic: 'test-js'
+    }
+
+    let res = await fetch(`http://practic-book-service/authors/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res)
+}
+
+
+async function updateUser(id) {
+    let data = {
+        surname: 'test-js',
+        name: 'test-js',
+        patronymic: 'test-js'
+    }
+
+    let res = await fetch(`http://practic-book-service/users/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res)
+}
+
+
+async function updateRating(user_id, book_id) {
+    let data = {
+        user_id: user_id,
+        book_id: book_id,
+        value: '10'
+    }
+
+    let res = await fetch('http://practic-book-service/rating', {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res)
+}
+
+
+async function updateComment(id) {
+    let data = {
+        description: 'test-js-updated'
+    }
+
+    let res = await fetch(`http://practic-book-service/comments/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res)
+}
+
+
+async function deleteBook(id) {
+    let res = await fetch(`http://practic-book-service/books/${id}`, {
+        method: 'DELETE'
+    });
+    res = await res.json();
+
+    console.log(res);
+}
+
+
+async function deleteAuthor(id) {
+    let res = await fetch(`http://practic-book-service/authors/${id}`, {
+        method: 'DELETE'
+    });
+    res = await res.json();
+
+    console.log(res);
+}
+
+
+async function deleteUser(id) {
+    let res = await fetch(`http://practic-book-service/users/${id}`, {
+        method: 'DELETE'
+    });
+    res = await res.json();
+
+    console.log(res);
+}
+
+
+async function deleteRating(user_id, book_id) {
+    let data = {
+        user_id: user_id,
+        book_id: book_id
+    }
+
+
+    let res = await fetch('http://practic-book-service/rating', {
+        method: 'DELETE',
+        body: JSON.stringify(data)
+    });
+    res = await res.json();
+
+    console.log(res);
+}
+
+
+async function deleteComment(id) {
+    let res = await fetch(`http://practic-book-service/comments/${id}`, {
+        method: 'DELETE'
+    });
+    res = await res.json();
+
+    console.log(res);
+}

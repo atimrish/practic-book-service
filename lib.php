@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -308,7 +308,7 @@ function updateAuthor($id, $data) {
     http_response_code(200);
     $res = [
         "status" => true,
-        "message" => "Post is update"
+        "message" => "Author is update"
     ];
     mysqli_close($mysqli);
 
@@ -619,7 +619,7 @@ function deleteRating($data) {
     mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $response = [
         'status' => true,
-        'response_code' => 200
+        'message' => 'rating is deleted'
     ];
     http_response_code(200);
     mysqli_close($mysqli);
@@ -849,7 +849,7 @@ function deleteComment($id) {
     mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $response = [
         'status' => true,
-        'response_code' => 200
+        'message' => 'comment is deleted'
     ];
     http_response_code(200);
     mysqli_close($mysqli);
