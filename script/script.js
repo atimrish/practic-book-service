@@ -1,7 +1,9 @@
 
-// getBooks();
+console.log('adad');
+
+getBooks();
 // getBook(3);
-// getAuthors();
+getAuthors();
 // getAuthor(1);
 // getUsers();
 // getUser(1);
