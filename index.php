@@ -16,6 +16,7 @@ if ($a[0] === '/') {
 
 $a = explode('/', $a);
 
+//die(print_r($a));
 
 $book_id = $_GET['book_id'];
 $user_id = $_GET['user_id'];
@@ -119,6 +120,9 @@ switch ($method) {
                 break;
             case 'comments':
                 addComment($_POST);
+                break;
+            case 'login':
+                checkUser($_POST);
                 break;
         }
         break;

@@ -9,6 +9,8 @@ let inputs = Array.from(form_container.querySelectorAll('input'));
 let labels = form_container.querySelectorAll('label');
 
 
+console.log('file is opened');
+
 function inputFocusEvent() {
     for (let i = 0; i < inputs.length; i++) {
         inputs[i].onfocus = () => {
@@ -105,7 +107,7 @@ formData.append('patronymic', '');
 formData.append('login', '');
 formData.append('password', '');
 formData.append('password_confirm', '');
-formData.append('profile_picture', '');
+formData.append('avatar', '');
 
 
 
@@ -191,8 +193,11 @@ function checkForm() {
             let profile_picture = inputs.find((value) => {
                 return value.getAttribute('name') === 'profile_picture';
             });
-            formData.set('profile_picture', profile_picture.value);
+            formData.set('avatar', profile_picture.value);
             console.log(formData);
+
+            addUser(formData);
+
             break;
 
 
@@ -219,3 +224,16 @@ function printForm() {
         inputFocusEvent();
     }
 }
+
+
+async function addUser(formData) {
+
+    let res = await fetch('http://practic-book-service/users', {
+        method: 'POST',
+        body: formData
+    });
+    res = await res.json();
+    console.log(res);
+
+}
+

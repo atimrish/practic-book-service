@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -380,20 +380,22 @@ function getUser($id) {
 function addUser($data) {
     $mysqli = connect_db();
 
+
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
     $login = $data['login'];
     $password = md5($data['password']);
-//    $is_admin = $data['is_admin'];
+    $is_admin = 0;
     $avatar = $data['avatar'];
 
     $sql = "
-    INSERT INTO `user`(surname, name, patronymic, login, password, avatar) 
-    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$avatar')
+    INSERT INTO `user`(surname, name, patronymic, login, password, is_admin, avatar) 
+    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin' ,'$avatar')
     ";
 
-    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+
+    $result = mysqli_query($mysqli, $sql);
 
     if ($result) {
         $response = [
@@ -855,3 +857,30 @@ function deleteComment($id) {
     mysqli_close($mysqli);
     echo json_encode($response);
 }
+
+
+function checkUser($data) {
+    $login = $data['login'];
+    $password = md5($data['password']);
+
+    $mysqli = connect_db();
+
+    $sql = "SELECT * FROM `user`
+            WHERE 
+                `login` = '$login' AND
+                `password` = '$password'
+            ";
+
+    $result = mysqli_query($mysqli, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    } else {
+        $result = [
+          'message' => 'error'
+        ];
+    }
+    echo  json_encode($result);
+}
+
