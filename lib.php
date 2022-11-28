@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд

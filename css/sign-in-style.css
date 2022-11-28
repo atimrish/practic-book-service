@@ -1,0 +1,116 @@
+@font-face {
+    font-family: 'Inter';
+    src: url("../fonts/Inter/Inter-VariableFont_slnt,wght.ttf") format('truetype');
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #37BC9B;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    transition: 0.5s;
+}
+
+input {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.container {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.title-sign-up {
+    color: #FFFFFF;
+    font-size: 56px;
+    text-align: center;
+}
+
+.form-container {
+    background-color: #FFFFFF;
+    width: 100%;
+    border-radius: 20px;
+    padding: 50px 0;
+}
+
+.form-container > form {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.form-container > form > div > * {
+    display: block;
+    width: 100%;
+}
+
+.form-container > form > .input-container {
+    margin: 30px auto;
+    border: 3px solid #37BC9B;
+    border-radius: 10px;
+    position: relative;
+    padding: 15px 0 10px 10px;
+}
+
+.form-container > form > div > label {
+    padding: 2px;
+    color: #37BC9B;
+    font-weight: 300;
+    z-index: 99;
+    position: absolute;
+    background-color: #FFFFFF;
+    width: auto;
+    top: 0;
+    left: 5px;
+}
+
+.form-container > form > div > input {
+    height: 30px;
+    padding: 0;
+    outline: none;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    width: 80%;
+}
+
+.input-focus {
+    animation: input-focus-animation 0.5s ease forwards!important;
+}
+
+.form-container > form > :last-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: none;
+}
+
+.form-container > form > :last-child > button:hover{
+    background-color: #37BC9B;
+    color: #FFFFFF;
+    transition: 0.3s ease;
+}
+
+.form-container > form > div > button {
+    width: 60%;
+    height: 50px;
+    font-weight: 500;
+    font-size: 20px;
+    color: #37BC9B;
+    background-color: #FFFFFF;
+    border: 3px solid #37BC9B;
+    border-radius: 10px;
+}
+
+@keyframes input-focus-animation {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: -20px;
+    }
+}
+
+

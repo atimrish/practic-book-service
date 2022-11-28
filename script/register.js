@@ -99,14 +99,21 @@ const forms = [
 
 let step = 0;
 let formData = new FormData();
+formData.append('surname', '');
+formData.append('name', '');
+formData.append('patronymic', '');
+formData.append('login', '');
+formData.append('password', '');
+formData.append('password_confirm', '');
+formData.append('profile_picture', '');
 
 
 
 form.onsubmit = (e) => {
     e.preventDefault();
-
+    checkForm();
     if (step === 2 ) {
-        checkForm();
+
         if (formData.get('password') === formData.get('password_confirm')) {
             console.log('Пароли соипадают');
             printForm();
@@ -114,7 +121,6 @@ form.onsubmit = (e) => {
             console.log('Пароли не совпадают', formData.get('password'), ' ' ,formData.get('password_confirm'), ' ', formData);
         }
     } else {
-        checkForm();
         printForm();
     }
 
@@ -155,9 +161,9 @@ function checkForm() {
             let patronymic = inputs.find((value) => {
                 return value.getAttribute('name') === 'patronymic';
             });
-            formData.append('surname', surname.value);
-            formData.append('name', name.value);
-            formData.append('patronymic', patronymic.value);
+            formData.set('surname', surname.value);
+            formData.set('name', name.value);
+            formData.set('patronymic', patronymic.value);
             break;
 
 
@@ -168,8 +174,8 @@ function checkForm() {
             let password = inputs.find((value) => {
                 return value.getAttribute('name') === 'password';
             });
-            formData.append('login', login.value);
-            formData.append('password', password.value);
+            formData.set('login', login.value);
+            formData.set('password', password.value);
             break;
 
 
@@ -177,7 +183,7 @@ function checkForm() {
             let password_confirm = inputs.find((value) => {
                 return value.getAttribute('name') === 'password_confirm';
             });
-            formData.append('password_confirm', password_confirm.value);
+            formData.set('password_confirm', password_confirm.value);
             break;
 
 
@@ -185,7 +191,7 @@ function checkForm() {
             let profile_picture = inputs.find((value) => {
                 return value.getAttribute('name') === 'profile_picture';
             });
-            formData.append('profile_picture', profile_picture.value);
+            formData.set('profile_picture', profile_picture.value);
             console.log(formData);
             break;
 
