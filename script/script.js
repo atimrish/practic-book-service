@@ -8,8 +8,19 @@ window.onload = () => {
 }
 
 
-if (localStorage.getItem('login') !== '') {
+if (localStorage.getItem('surname') !== null) {
     pushNotice('info', 'Добро пожаловать');
+
+    const account_block = document.querySelector('.account-block');
+
+    account_block.innerHTML =
+        `
+        <div>
+            <div class="favourite_books"><img src="../images/izobrazhenie-3(1)-transformed%201.png" alt=""></div>
+            <div class="profile"><img src="../images/izobrazhenie-3-transformed%201.png" alt=""></div>
+        </div>
+    `;
+
 }
 
 
@@ -54,4 +65,16 @@ function pushNotice(type ,message) {
     }, 4800);
 
 
+}
+
+
+async function getBooks() {
+    try {
+        let res = await fetch('http://practic-book-service/books');
+        res = await res.json();
+        console.log(res);
+    }
+    catch (error) {
+        console.log(error);
+    }
 }

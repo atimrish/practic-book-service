@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <h2>Добавить автора</h2>
+    <form action="" method="post" id="add_author" enctype="multipart/form-data">
+
+        <table>
+            <thead>
+                <tr>
+                    <th><label for="surname">Фамилия</label></th>
+                    <th><label for="name">Имя</label></th>
+                    <th><label for="patronymic">Отчество</label></th>
+                    <th><label for="avatar">Изображение профиля</label></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td><input type="text" name="surname" id="surname"></td>
+                    <td><input type="text" name="name" id="name"></td>
+                    <td><input type="text" name="patronymic" id="patronymic"></td>
+                    <td><input type="file" name="avatar" id="avatar"></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+        <div>
+            <button type="submit">Добавить</button>
+        </div>
+
+    </form>
+</section>
+
+
+<script src="script/functions.js"></script>
+</body>
+</html>

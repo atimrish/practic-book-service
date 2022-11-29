@@ -34,15 +34,21 @@ form.onsubmit = async (e) => {
         body: formData
         });
     res = await res.json();
+    console.log(res);
 
     if (res.status) {
-        localStorage.setItem('login', login);
-        window.location.replace('http://practic-book-service');
+        localStorage.setItem('surname', res.surname);
+        localStorage.setItem('name', res.name);
+        localStorage.setItem('patronymic', res.patronymic);
+        window.location.href = 'http://practic-book-service/index.html';
     } else {
         pushNotice('error', res.message);
     }
 
 }
+
+
+
 
 
 

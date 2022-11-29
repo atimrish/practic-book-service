@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -254,13 +254,17 @@ function addAuthor($data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
+    $avatar = $data['avatar'] ?? 'default-profile-picture.jpg';
 
     $sql = "
-    INSERT INTO `author`(surname, name, patronymic) 
-    VALUES ('$surname', '$name', '$patronymic')
+    INSERT INTO `author`(surname, name, patronymic, author_image) 
+    VALUES ('$surname', '$name', '$patronymic', '$avatar')
     ";
 
-    $result = mysqli_query($mysqli, $sql);
+//    $result = mysqli_query($mysqli, $sql);
+
+
+    die(print_r($_FILES) . print_r($_POST));
 
     if ($result) {
         $response = [
@@ -268,6 +272,14 @@ function addAuthor($data) {
             'response_code' => 201
         ];
         http_response_code(201);
+
+
+
+
+
+
+
+
     } else {
         $response = [
             'status' => false,
@@ -892,7 +904,7 @@ function checkUser($data) {
     $result = mysqli_query($mysqli, $sql);
 
     if (mysqli_num_rows($result) > 0) {
-        $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        $result = mysqli_fetch_assoc($result);
         $result['status'] = true;
         $result['message'] = 'Добро пожаловать';
     } else {

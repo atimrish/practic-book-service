@@ -37,6 +37,62 @@
 // deleteComment(2);
 
 
+const form_add_author = document.querySelector('#add_author');
+
+form_add_author.onsubmit = (e) => {
+    e.preventDefault();
+    let surname = form_add_author.querySelector('input#surname').value;
+    let name = form_add_author.querySelector('input#name').value;
+    let patronymic = form_add_author.querySelector('input#patronymic').value;
+    let avatar = form_add_author.querySelector('input#avatar').files[0];
+
+
+    let fileReader = new FileReader();
+    console.log(fileReader.result);
+
+    console.log(avatar);
+
+    const formData = new FormData();
+    formData.append('surname', surname);
+    formData.append('name', name);
+    formData.append('patronymic', patronymic);
+    formData.append('avatar', avatar);
+
+    console.log(formData);
+
+    // addAuthor(formData);
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function getBooks() {
     try {
         let res = await fetch('http://practic-book-service/books');
@@ -229,17 +285,17 @@ async function addBook() {
 }
 
 
-async function addAuthor() {
+async function addAuthor(formData) {
 
-    let formData = new FormData();
-    formData.append('surname', 'test_js');
-    formData.append('name', 'test_js');
-    formData.append('patronymic', 'test_js');
 
-    let res = fetch('http://practic-book-service/authors', {
+    let res = await fetch('http://practic-book-service/authors', {
         method: 'POST',
         body: formData
     });
+    res = await res.text();
+
+    console.log(res);
+
 
 }
 
