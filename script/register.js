@@ -8,6 +8,11 @@ const header_register = form_container.querySelector('.form-title');
 let inputs = Array.from(form_container.querySelectorAll('input'));
 let labels = form_container.querySelectorAll('label');
 
+const link_data = {
+    bool_login_check: false
+}
+
+
 
 console.log('file is opened');
 
@@ -120,13 +125,21 @@ form.onsubmit = (e) => {
             console.log('Пароли соипадают');
             printForm();
         } else {
-            console.log('Пароли не совпадают', formData.get('password'), ' ' ,formData.get('password_confirm'), ' ', formData);
+            pushNotice('Пароли не совпадают');
         }
-    } else {
+    } else if (step === 1) {
+        console.log(checkLogin(formData.get('login'), link_data));
+
+        if (link_data.bool_login_check) {
+            printForm();
+        }
+
+    }
+    else {
         printForm();
     }
 
-
+    console.log(step);
 
 
 
@@ -178,6 +191,7 @@ function checkForm() {
             });
             formData.set('login', login.value);
             formData.set('password', password.value);
+
             break;
 
 
@@ -233,7 +247,75 @@ async function addUser(formData) {
         body: formData
     });
     res = await res.json();
-    console.log(res);
+
+    if (res.status === true) {
+        window.location.replace('http://practic-book-service');
+    }
 
 }
+
+async function checkLogin(login, link_data) {
+    'use strict';
+    const loginFormData = new FormData();
+    loginFormData.append('login', login);
+
+    let res = await fetch('http://practic-book-service/logincheck', {
+        method: 'POST',
+        body: loginFormData
+    });
+    res = await res.json();
+
+
+
+    if (!res.status) {
+        pushNotice('warning', res.message);
+        link_data.bool_login_check = false;
+    } else {
+        link_data.bool_login_check = true;
+    }
+
+}
+
+function pushNotice(type ,message) {
+
+    const notice = document.createElement('div');
+
+    switch (type) {
+        case 'warning':
+            notice.classList.add('push-notice-warning');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-warning">!</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'success':
+            notice.classList.add('push-notice-success');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-success">V</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'error':
+            notice.classList.add('push-notice-error');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-error">X</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'info':
+            notice.classList.add('push-notice-info');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-info">i</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+    }
+
+
+
+    document.body.appendChild(notice);
+
+    setTimeout(() => {
+        notice.remove();
+    }, 4800);
+
+
+}
+
 

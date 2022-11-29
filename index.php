@@ -124,6 +124,9 @@ switch ($method) {
             case 'login':
                 checkUser($_POST);
                 break;
+            case 'logincheck':
+                checkLogin($_POST);
+                break;
         }
         break;
 

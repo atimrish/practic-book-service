@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -380,7 +380,6 @@ function getUser($id) {
 function addUser($data) {
     $mysqli = connect_db();
 
-
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
@@ -389,31 +388,50 @@ function addUser($data) {
     $is_admin = 0;
     $avatar = $data['avatar'];
 
-    $sql = "
+    $sql = "SELECT `login` FROM `user` WHERE `login` = '$login'";
+
+    $result = mysqli_query($mysqli, $sql);
+    if (mysqli_num_rows($result) === 0) {
+
+        $sql = "
     INSERT INTO `user`(surname, name, patronymic, login, password, is_admin, avatar) 
     VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin' ,'$avatar')
     ";
 
 
-    $result = mysqli_query($mysqli, $sql);
+        $result = mysqli_query($mysqli, $sql);
 
-    if ($result) {
-        $response = [
-            'status' => true,
-            'response_code' => 201
-        ];
-        http_response_code(201);
+        if ($result) {
+            $response = [
+                'status' => true,
+                'message' => 'Пользователь добавлен'
+            ];
+            http_response_code(201);
+        } else {
+            $response = [
+                'status' => false,
+                'message' => '500 error'
+            ];
+            http_response_code(500);
+        }
+
+        mysqli_close($mysqli);
+
+        echo json_encode($response);
+
     } else {
+
         $response = [
             'status' => false,
-            'response_code' => 500
+            'message' => 'Аккаунт с таким логином уже существует'
         ];
-        http_response_code(500);
+
+        echo json_encode($response);
     }
 
-    mysqli_close($mysqli);
 
-    echo json_encode($response);
+
+
 
 }
 
@@ -875,12 +893,35 @@ function checkUser($data) {
 
     if (mysqli_num_rows($result) > 0) {
         $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
+        $result['status'] = true;
+        $result['message'] = 'Добро пожаловать';
     } else {
         $result = [
-          'message' => 'error'
+          'message' => 'Неправильный логин или пароль'
         ];
     }
     echo  json_encode($result);
+}
+
+function checkLogin($data) {
+    $login = $data['login'];
+    $mysqli = connect_db();
+
+    $sql = "SELECT `login` FROM `user` WHERE `login` = '$login'";
+
+    $result = mysqli_query($mysqli, $sql);
+    mysqli_close($mysqli);
+
+    if (mysqli_num_rows($result) === 0) {
+        $response = [
+            'status' => true,
+        ];
+    } else {
+        $response = [
+            'status' => false,
+            'message' => 'Пользователь с таким логином уже существует'
+        ];
+    }
+    echo json_encode($response);
 }
 

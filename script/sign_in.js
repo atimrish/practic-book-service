@@ -34,39 +34,57 @@ form.onsubmit = async (e) => {
         body: formData
         });
     res = await res.json();
-    console.log(res);
+
+    if (res.status) {
+        localStorage.setItem('login', login);
+        window.location.replace('http://practic-book-service');
+    } else {
+        pushNotice('error', res.message);
+    }
 
 }
 
 
-// getBooks();
-// addUser();
-async function getBooks() {
-    try {
-        let res = await fetch('http://practic-book-service/books');
-        res = await res.json();
-        console.log(res);
+
+
+function pushNotice(type ,message) {
+
+    const notice = document.createElement('div');
+
+    switch (type) {
+        case 'warning':
+            notice.classList.add('push-notice-warning');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-warning">!</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'success':
+            notice.classList.add('push-notice-success');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-success">V</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'error':
+            notice.classList.add('push-notice-error');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-error">X</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'info':
+            notice.classList.add('push-notice-info');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-info">i</div>
+            <div class="notice-body">${message}</div>`;
+            break;
     }
-    catch (error) {
-        console.log(error);
-    }
-}
 
 
-async function addUser() {
 
-    let formData = new FormData();
-    formData.append('surname', 'test_js');
-    formData.append('name', 'test_js');
-    formData.append('patronymic', 'test_js');
-    formData.append('login', 'test_js');
-    formData.append('password', 'test_js');
-    formData.append('avatar', 'test_js');
+    document.body.appendChild(notice);
 
-    let res = await fetch('http://practic-book-service/users', {
-        method: 'POST',
-        body: formData
-    });
-    res = await res.json();
-    console.log(res)
+    setTimeout(() => {
+        notice.remove();
+    }, 4800);
+
+
 }
