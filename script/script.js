@@ -3,6 +3,10 @@ const books = document.querySelectorAll('.preloader-animation');
 window.onload = () => {
     setTimeout(() => {
             books.forEach(value => value.classList.remove('preloader-animation'));
+            getBooks();
+
+
+
         },
         600);
 }
@@ -68,21 +72,29 @@ function pushNotice(type ,message) {
 }
 
 
-getBooks();
+
 
 
 async function getBooks() {
     try {
         const popular_book_container = document.querySelector('#popular_book_container');
-        const book_images = popular_book_container.querySelectorAll('img');
-        const books_titles = popular_book_container.querySelectorAll('.book-title');
+        popular_book_container.innerHTML = '';
+
         let res = await fetch('http://practic-book-service/books');
         res = await res.json();
 
-        res.forEach((value, index) => {
-            book_images[index].setAttribute('src', 'uploads/' + value.book_image);
-            book_images[index].setAttribute('data-id', value.id);
-            books_titles[index].innerText = value.book_title;
+        res.forEach((value) => {
+
+            popular_book_container.innerHTML += `
+                        <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.id}'">
+                            <div class="book-image">
+                                <img src="uploads/${value.book_image}" alt="">
+                            </div>
+                            <div class="book-title">${value.book_title}</div>
+                        </div>
+            
+            `;
+
         });
 
 
@@ -92,3 +104,6 @@ async function getBooks() {
         console.log(error);
     }
 }
+
+
+

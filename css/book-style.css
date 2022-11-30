@@ -120,28 +120,92 @@ header {
     right: 30px;
 }
 
+main {
+    padding: 30px;
+}
+
 .main-block {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: start;
-    padding: 30px;
+    margin-bottom: 150px;
 }
 
 
 .main-block > .book > .book-image {
     background-color: #D9D9D9;
     width: 400px;
-    height: 500px;
+    height: 600px;
+}
+
+.main-block > .book {
+    width: 25%;
+}
+
+.main-block > .book > .book-image > img {
+    object-fit: contain;
 }
 
 .main-block > .description > .description-body {
     background-color: #D9D9D9;
-    width: 500px;
-    height: 300px;
+    width: 100%;
+    font-size: 18px;
+    line-height: 28px;
 }
+
+.main-block > .description {
+    width: 40%;
+}
+
+.description-body::before {
+    content: '\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0\00A0';
+}
+
 
 .main-block > .description > .description-title {
-    text-align: center;
+    text-align: left;
+    font-size: 24px;
 }
 
+img {
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+.book-title {
+    font-size: 38px;
+}
+
+.categories {
+    width: 20%;
+}
+
+.categories > h3 {
+    font-size: 24px;
+}
+
+.categories > ul {
+    list-style: none;
+}
+
+.categories > ul > li {
+    margin: 15px 0;
+}
+
+
+#comment-container > h3 {
+    font-size: 24px;
+}
+
+.footer-container {
+    background-color: #37BC9B;
+    padding: 80px 30px 20px 30px;
+}
+
+.footer-container > .footer-logo {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
+}

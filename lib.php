@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -81,7 +81,7 @@ function getBook($id) {
     ";
 
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
-    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = mysqli_fetch_assoc($result);
 
     mysqli_close($mysqli);
 
@@ -266,7 +266,7 @@ function addAuthor($data) {
 
 
     $sql = "
-    INSERT INTO `author`(surname, name, patronymic, avatar) 
+    INSERT INTO `author`(surname, name, patronymic, author_image) 
     VALUES ('$surname', '$name', '$patronymic', '$avatar')
     ";
 

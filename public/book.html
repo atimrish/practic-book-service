@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../css/book-style.css">
+    <link rel="stylesheet" href="../css/notice.css">
 </head>
 <body>
 <header>
@@ -39,7 +40,8 @@
     <div class="main-block">
         <div class="book">
             <div class="book-image"><img src="" alt=""></div>
-            <div class="book-title"></div>
+            <h2 class="book-title"></h2>
+            <div class="author"><a href=""></a></div>
             <div class="rating"></div>
         </div>
         <div class="description">
@@ -47,21 +49,35 @@
             <div class="description-body"></div>
         </div>
         <div class="categories">
-            <h3>Характеристики</h3>
+            <h3>Жанры</h3>
             <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+
             </ul>
         </div>
     </div>
 
 
+    <section id="comment-container">
+        <h3>Написать комментарий</h3>
+        <form action="" id="comment-form" method="post">
+            <label for="comment_body" style="display: none"></label>
+            <textarea name="comment_body" id="comment_body" cols="30" rows="10" style="resize: none"></textarea>
+            <div>
+                <button type="submit">Оставить комментарий</button>
+            </div>
+        </form>
+
+    </section>
+
 
 </main>
 
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">LOGO</div>
+    </div>
+</footer>
 
+<script src="../script/book.js"></script>
 </body>
 </html>

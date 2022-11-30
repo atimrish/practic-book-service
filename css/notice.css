@@ -56,7 +56,7 @@
     bottom: 70px;
     left: calc(50% - 200px);
     border-radius: 10px;
-    border-left: 10px solid #3eff37;
+    border-left: 10px solid #026e00;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -68,7 +68,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #3eff37;
+    background-color: #026e00;
     text-align: center;
     line-height: 50px;
     color: #FFF;

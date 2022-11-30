@@ -54,7 +54,6 @@ form_add_author.onsubmit = (e) => {
     formData.append('patronymic', patronymic);
     formData.append('avatar', avatar);
 
-    console.log(formData);
 
     addAuthor(formData);
 
@@ -313,11 +312,16 @@ async function addBook(formData) {
         });
 
     res = await res.json();
-    console.log(res);
+
+    if (res.status) {
+        pushNotice('success', 'Операция выполнена успешно');
+    } else {
+        pushNotice('error', 'Ошибка');
+    }
 
     }
     catch (e) {
-        console.log(e);
+        pushNotice('error', e);
     }
 
 
@@ -335,7 +339,11 @@ async function addAuthor(formData) {
     });
     res = await res.json();
 
-    console.log(res);
+    if (res.status) {
+        pushNotice('success', 'Операция выполнена успешно');
+    } else {
+        pushNotice('error', 'Ошибка');
+    }
 
 
 }
