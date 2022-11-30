@@ -78,16 +78,16 @@ header {
 
 
 
-.header-container > :nth-child(3) {
+.header-container > .account-block {
     width: 20%;
 }
 
-.header-container > :nth-child(3) > div {
+.header-container > .account-block > .account-link {
     text-align: right;
 }
 
 
-.header-container > :nth-child(3) > div > * {
+.header-container > .account-block > .account-link > * {
     color: #FFFFFF;
     font-size: 20px;
 }
@@ -171,6 +171,7 @@ header {
 
 .book-container > .book {
     width: 18%;
+    cursor: pointer;
 }
 
 .book-container > .book > .book-image {
@@ -178,12 +179,20 @@ header {
     background-color: #D9D9D9;
     border-radius: 10px;
     margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.book-container > .book > .book-image > img {
+    border: none;
+    object-fit: cover;
+    object-position: center;
 }
 
 .book-container > .book > .book-title {
     height: 30px;
     background-color: #D9D9D9;
     border-radius: 10px;
+    text-align: center;
 }
 
 .sidebar {
@@ -349,15 +358,15 @@ section.best {
 }
 
 .account-block > div > * {
-    width: 50px;
-    height: 50px;
-    margin-left: 30px;
     cursor: pointer;
 }
 
 img {
     width: 100%;
     height: 100%;
+    border: none;
+    box-shadow: none;
+    text-decoration: none;
 }
 
 

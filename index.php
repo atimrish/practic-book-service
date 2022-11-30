@@ -46,6 +46,9 @@ switch ($method) {
                 case 'comments':
                     getComments();
                     break;
+                case 'genre':
+                    getAllGenres();
+                    break;
             }
 
 

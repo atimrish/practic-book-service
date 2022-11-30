@@ -1,41 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
 <section>
-    <h2>Добавить автора</h2>
-    <form action="" method="post" id="add_author" enctype="multipart/form-data">
+  <h2>Добавить автора</h2>
+  <form action="" method="post" id="add_author" enctype="multipart/form-data">
 
-        <table>
-            <thead>
-                <tr>
-                    <th><label for="surname">Фамилия</label></th>
-                    <th><label for="name">Имя</label></th>
-                    <th><label for="patronymic">Отчество</label></th>
-                    <th><label for="avatar">Изображение профиля</label></th>
-                </tr>
-            </thead>
+    <table>
+      <thead>
+      <tr>
+        <th><label for="surname">Фамилия</label></th>
+        <th><label for="name">Имя</label></th>
+        <th><label for="patronymic">Отчество</label></th>
+        <th><label for="avatar">Изображение профиля</label></th>
+      </tr>
+      </thead>
 
-            <tbody>
-                <tr>
-                    <td><input type="text" name="surname" id="surname"></td>
-                    <td><input type="text" name="name" id="name"></td>
-                    <td><input type="text" name="patronymic" id="patronymic"></td>
-                    <td><input type="file" name="avatar" id="avatar"></td>
-                </tr>
+      <tbody>
+      <tr>
+        <td><input type="text" name="surname" id="surname"></td>
+        <td><input type="text" name="name" id="name"></td>
+        <td><input type="text" name="patronymic" id="patronymic"></td>
+        <td><input type="file" name="avatar" id="avatar"></td>
+      </tr>
 
-            </tbody>
+      </tbody>
 
-        </table>
-        <div>
-            <button type="submit">Добавить</button>
-        </div>
+    </table>
+    <div>
+      <button type="submit" name="add_author_btn">Добавить</button>
+    </div>
 
-    </form>
+  </form>
 </section>
+
+
+<section>
+  <h2>Изменить автора</h2>
+  <form action="" method="post" id="update_author" enctype="multipart/form-data">
+
+    <table>
+      <thead>
+      <tr>
+        <th><label for="update_author_id">id</label></th>
+        <th><label for="update_surname_author">Фамилия</label></th>
+        <th><label for="update_name_author">Имя</label></th>
+        <th><label for="update_patronymic_author">Отчество</label></th>
+        <th><label for="update_avatar_author">Изображение профиля</label></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <td><select name="update_author_id" id="update_author_id"></select></td>
+        <td><input type="text" name="update_surname_author" id="update_surname_author"></td>
+        <td><input type="text" name="update_name_author" id="update_name_author"></td>
+        <td><input type="text" name="update_patronymic_author" id="update_patronymic_author"></td>
+        <td><input type="file" name="update_avatar_author" id="update_avatar_author"></td>
+      </tr>
+
+      </tbody>
+
+    </table>
+    <div>
+      <button type="submit" name="update_author_btn">Добавить</button>
+    </div>
+
+  </form>
+</section>
+
+
+
+
+
+
+<section>
+  <h2>Добавить книгу</h2>
+  <form action="" method="post" id="add_book" enctype="multipart/form-data">
+
+    <table>
+      <thead>
+      <tr>
+        <th><label for="title">Название</label></th>
+        <th><label for="description">Описание</label></th>
+        <th><label for="year_of_issue">Год выпуска</label></th>
+        <th><label for="author_id">Автор</label></th>
+        <th><label for="genre_id">Жанр</label></th>
+        <th><label for="image">Изображение</label></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <tr>
+        <td><input type="text" name="title" id="title"></td>
+        <td><input type="text" name="description" id="description"></td>
+        <td><input type="text" name="year_of_issue" id="year_of_issue" maxlength="4"></td>
+        <td><select name="author_id" id="author_id"></select></td>
+        <td><select name="genre_id" id="genre_id"></select></td>
+        <td><input type="file" name="image" id="image"></td>
+      </tr>
+
+      </tbody>
+
+    </table>
+    <div>
+      <button type="submit" name="add_book_btn">Добавить</button>
+    </div>
+
+  </form>
+</section>
+
+
+
+
 
 
 <script src="script/functions.js"></script>

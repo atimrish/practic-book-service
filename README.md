@@ -37,3 +37,5 @@
 * POST http://practic-book-service/comments
 * PATCH http://practic-book-service/comments
 * DELETE http://practic-book-service/comments/{id}
+### Genre
+* GET http://practic-book-service/genre

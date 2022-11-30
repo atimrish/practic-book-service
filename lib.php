@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -28,7 +28,6 @@ function getBooks() {
                 `book`.`year_of_issue` AS book_year_of_issue,
                 `book`.`author_id`,
                 `book`.`genre_id`,
-                `book`.`rating` AS book_rating,
                 `author`.`surname` AS author_surname,
                 `author`.`name` AS author_name,
                 `author`.`patronymic` AS author_patronymic,
@@ -67,7 +66,6 @@ function getBook($id) {
                 `book`.`year_of_issue` AS book_year_of_issue,
                 `book`.`author_id`,
                 `book`.`genre_id`,
-                `book`.`rating` AS book_rating,
                 `author`.`surname` AS author_surname,
                 `author`.`name` AS author_name,
                 `author`.`patronymic` AS author_patronymic,
@@ -99,11 +97,13 @@ function addBook($data) {
     $mysqli = connect_db();
 
     $title = $data['title'];
-    $image = $data['image'];
     $description = $data['description'];
     $year_of_issue = $data['year_of_issue'];
     $author_id = $data['author_id'];
     $genre_id = $data['genre_id'];
+    $image =  isset($_FILES['image']['name']) ? time() . $_FILES['image']['name'] : 'default-profile-picture.jpg';
+    $tmp_name = $_FILES['image']['tmp_name'];
+
 
     $sql = "
     INSERT INTO `book`(title, image, description, year_of_issue, author_id, genre_id)
@@ -118,6 +118,12 @@ function addBook($data) {
           'response_code' => 201
         ];
         http_response_code(201);
+
+        $path = 'uploads' . DIRECTORY_SEPARATOR . $image;
+
+        move_uploaded_file($tmp_name, $path);
+
+
     } else {
         $response = [
             'status' => false,
@@ -254,17 +260,18 @@ function addAuthor($data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
-    $avatar = $data['avatar'] ?? 'default-profile-picture.jpg';
+    $avatar =  isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $tmp_name = $_FILES['avatar']['tmp_name'];
+
+
 
     $sql = "
-    INSERT INTO `author`(surname, name, patronymic, author_image) 
+    INSERT INTO `author`(surname, name, patronymic, avatar) 
     VALUES ('$surname', '$name', '$patronymic', '$avatar')
     ";
 
-//    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_query($mysqli, $sql);
 
-
-    die(print_r($_FILES) . print_r($_POST));
 
     if ($result) {
         $response = [
@@ -273,11 +280,9 @@ function addAuthor($data) {
         ];
         http_response_code(201);
 
+        $path = 'uploads' . DIRECTORY_SEPARATOR . $avatar;
 
-
-
-
-
+        move_uploaded_file($tmp_name, $path);
 
 
     } else {
@@ -286,6 +291,7 @@ function addAuthor($data) {
             'response_code' => 500
         ];
         http_response_code(500);
+        echo mysqli_error($mysqli);
     }
 
     mysqli_close($mysqli);
@@ -936,4 +942,19 @@ function checkLogin($data) {
     }
     echo json_encode($response);
 }
+
+function getAllGenres() {
+    $mysqli = connect_db();
+
+    $sql = "SELECT * FROM `genre`";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+
+    echo json_encode($result);
+}
+
 

@@ -68,11 +68,25 @@ function pushNotice(type ,message) {
 }
 
 
+getBooks();
+
+
 async function getBooks() {
     try {
+        const popular_book_container = document.querySelector('#popular_book_container');
+        const book_images = popular_book_container.querySelectorAll('img');
+        const books_titles = popular_book_container.querySelectorAll('.book-title');
         let res = await fetch('http://practic-book-service/books');
         res = await res.json();
-        console.log(res);
+
+        res.forEach((value, index) => {
+            book_images[index].setAttribute('src', 'uploads/' + value.book_image);
+            book_images[index].setAttribute('data-id', value.id);
+            books_titles[index].innerText = value.book_title;
+        });
+
+
+
     }
     catch (error) {
         console.log(error);

@@ -47,10 +47,6 @@ form_add_author.onsubmit = (e) => {
     let avatar = form_add_author.querySelector('input#avatar').files[0];
 
 
-    let fileReader = new FileReader();
-    console.log(fileReader.result);
-
-    console.log(avatar);
 
     const formData = new FormData();
     formData.append('surname', surname);
@@ -60,12 +56,38 @@ form_add_author.onsubmit = (e) => {
 
     console.log(formData);
 
-    // addAuthor(formData);
+    addAuthor(formData);
 
 
 };
 
 
+const form_add_book = document.querySelector('#add_book');
+
+getAllGenres();
+getAuthorsAndSelectAdd();
+
+form_add_book.onsubmit = (e) => {
+    e.preventDefault();
+    let title = form_add_book.querySelector('input#title').value;
+    let description = form_add_book.querySelector('input#description').value;
+    let year_of_issue = form_add_book.querySelector('input#year_of_issue').value;
+    let author_id = form_add_book.querySelector('select#author_id').value;
+    let genre_id = form_add_book.querySelector('select#genre_id').value;
+    let image = form_add_book.querySelector('input#image').files[0];
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('year_of_issue', year_of_issue);
+    formData.append('author_id', author_id);
+    formData.append('genre_id', genre_id);
+    formData.append('image', image);
+
+
+    addBook(formData);
+
+}
 
 
 
@@ -84,12 +106,21 @@ form_add_author.onsubmit = (e) => {
 
 
 
+async function getAllGenres() {
+    try {
+        const genre_select = form_add_book.querySelector('select#genre_id');
+        let res = await fetch('http://practic-book-service/genre');
+        res = await res.json();
 
+        res.forEach(value => {
+            genre_select.innerHTML += `<option value="${value.id}">${value.title}</option>`
+        });
 
-
-
-
-
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
 
 
@@ -126,6 +157,22 @@ async function getAuthors() {
         console.log(error);
     }
 }
+
+async function getAuthorsAndSelectAdd() {
+    try {
+        const author_select = form_add_book.querySelector('select#author_id');
+        let res = await fetch('http://practic-book-service/authors');
+        res = await res.json();
+        res.forEach(value => {
+            author_select.innerHTML += `<option value="${value.id}">${value.surname} ${value.name}</option>`;
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 async function getAuthor(id) {
     try {
@@ -257,22 +304,16 @@ async function getCommentByUserIdAndBookId(user_id, book_id) {
 
 
 
-async function addBook() {
-
-    let formData = new FormData();
-    formData.append('title', 'test_js');
-    formData.append('image', 'test_js');
-    formData.append('description', 'test_js');
-    formData.append('year_of_issue', '2022');
-    formData.append('author_id', '1');
-    formData.append('genre_id', '3');
-
+async function addBook(formData) {
 
     try {
         let res = await fetch('http://practic-book-service/books', {
             method: 'POST',
             body: formData
         });
+
+    res = await res.json();
+    console.log(res);
 
     }
     catch (e) {
@@ -292,7 +333,7 @@ async function addAuthor(formData) {
         method: 'POST',
         body: formData
     });
-    res = await res.text();
+    res = await res.json();
 
     console.log(res);
 
