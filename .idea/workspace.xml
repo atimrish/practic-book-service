@@ -14,8 +14,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="CSS File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -40,13 +40,14 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/var/www/practic-book-service/images&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/var/www/practic-book-service&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/images" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -71,6 +72,7 @@
       <workItem from="1669647036305" duration="10613000" />
       <workItem from="1669716205431" duration="13124000" />
       <workItem from="1669811964224" duration="16242000" />
+      <workItem from="1669881090722" duration="14933000" />
     </task>
     <task id="LOCAL-00001" summary="asd">
       <created>1669136864590</created>

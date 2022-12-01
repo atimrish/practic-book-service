@@ -12,7 +12,7 @@ window.onload = () => {
 }
 
 
-if (localStorage.getItem('surname') !== null) {
+if (localStorage.getItem('user_id') !== null) {
     pushNotice('info', 'Добро пожаловать');
 
     const account_block = document.querySelector('.account-block');
@@ -21,7 +21,9 @@ if (localStorage.getItem('surname') !== null) {
         `
         <div>
             <div class="favourite_books"><img src="../images/izobrazhenie-3(1)-transformed%201.png" alt=""></div>
-            <div class="profile"><img src="../images/izobrazhenie-3-transformed%201.png" alt=""></div>
+            <div class="profile"><img src="${'uploads/' + localStorage.getItem('avatar')}" 
+            onclick="window.location.href = 'http://practic-book-service/public/user.html'" alt="">
+            </div>
         </div>
     `;
 
@@ -107,3 +109,8 @@ async function getBooks() {
 
 
 
+
+function logOut() {
+    localStorage.clear();
+    window.location.replace('http://practic-book-service/index.html');
+}

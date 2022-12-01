@@ -604,5 +604,8 @@ function pushNotice(type ,message) {
 
 }
 
-
+function logOut() {
+    localStorage.clear();
+    window.location.replace('http://practic-book-service/index.html');
+}
 

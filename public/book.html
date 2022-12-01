@@ -14,7 +14,7 @@
     <div class="header-container">
         <div>
             <div class="header-menu"></div>
-            <div class="header-logo">LOGO</div>
+            <div class="header-logo" onclick="window.location.href = 'http://practic-book-service/index.html'">LOGO</div>
         </div>
 
         <div>
@@ -58,14 +58,19 @@
 
 
     <section id="comment-container">
-        <h3>Написать комментарий</h3>
+        <h3>Комментарии</h3>
         <form action="" id="comment-form" method="post">
             <label for="comment_body" style="display: none"></label>
-            <textarea name="comment_body" id="comment_body" cols="30" rows="10" style="resize: none"></textarea>
+            <textarea name="comment_body" id="comment_body" cols="30" rows="1" placeholder="Напишите комментарий"></textarea>
             <div>
                 <button type="submit">Оставить комментарий</button>
             </div>
         </form>
+
+        <div class="comments">
+
+        </div>
+
 
     </section>
 

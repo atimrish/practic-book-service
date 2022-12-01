@@ -1,11 +1,29 @@
-const form_comment = document.querySelector('#comment-container > form');
+const form_comment = document.querySelector('#comment-form');
 const description = document.querySelector('#comment_body');
-
-
 const params = getSearchParams();
+const comment_block = document.querySelector('.comments');
+
+if (localStorage.getItem('user_id') !== null) {
+    const account_block = document.querySelector('.account-block');
+
+    account_block.innerHTML =
+        `
+        <div>
+            <div class="favourite_books"><img src="../images/izobrazhenie-3(1)-transformed%201.png" alt=""></div>
+            <div class="profile"><img src="${'../uploads/' + localStorage.getItem('avatar')}" 
+            onclick="window.location.href = 'http://practic-book-service/public/user.html'" alt="">
+            </div>
+        </div>
+    `;
+
+}
+
+
+
+
 
 getBook(params.id);
-
+getCommentByBookId(params.id);
 
 form_comment.onsubmit = (e) => {
     e.preventDefault();
@@ -17,7 +35,8 @@ form_comment.onsubmit = (e) => {
     formData.append('user_id', localStorage.getItem('user_id'));
     formData.append('description', comment_value);
 
-    console.log(formData);
+    addComment(formData);
+    description.value = '';
 
 };
 
@@ -122,4 +141,45 @@ function pushNotice(type ,message) {
 }
 
 
+async function addComment(formData) {
 
+    let res = await fetch('http://practic-book-service/comments', {
+        method: 'POST',
+        body: formData
+    });
+
+    res = await res.json();
+
+    if (res.status) {
+        pushNotice('success', res.message);
+    } else {
+        pushNotice('error', res.message);
+    }
+
+
+}
+
+
+async function getCommentByBookId(id) {
+    try {
+        let res = await fetch(`http://practic-book-service/comments?book_id=${id}`);
+        res = await res.json();
+
+        res.forEach(value => {
+            comment_block.innerHTML += `
+            <div class="comment" data-id="${value.comment_id}">
+                <div class="user-image"><img src="../uploads/${value.user_avatar}" alt=""></div>
+                <div class="comment-body">
+                    <h3>${value.user_surname + ' ' + value.user_name}</h3>
+                    <div>${value.comment_description}</div>
+                </div>
+            </div>
+            
+            `;
+        });
+
+    }
+    catch (error) {
+        pushNotice('error', 'Не удалось найти комментарии по этой книге');
+    }
+}

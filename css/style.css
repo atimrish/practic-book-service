@@ -98,6 +98,7 @@ header {
     color: #FFFFFF;
     font-size: 32px;
     font-weight: 700;
+    cursor: pointer;
 
 }
 
@@ -108,6 +109,7 @@ header {
     background-image: url("../images/изображение 2.png");
     background-repeat: no-repeat;
     background-size: contain;
+    cursor: pointer;
 }
 
 .search-img {
@@ -374,3 +376,19 @@ img {
 }
 
 
+.account-block > div > .favourite_books {
+    height: 50px;
+}
+
+.account-block > div > .profile {
+    width: 50px;
+    height: 50px;
+    margin-left: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.account-block > div > .profile > img {
+    object-fit: cover;
+    object-position: center;
+}

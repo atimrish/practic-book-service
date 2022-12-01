@@ -285,6 +285,8 @@ function addAuthor($data) {
         move_uploaded_file($tmp_name, $path);
 
 
+
+
     } else {
         $response = [
             'status' => false,
@@ -385,7 +387,7 @@ function getUser($id) {
     ";
 
     $result = mysqli_query($mysqli, $sql);
-    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = mysqli_fetch_assoc($result);
     mysqli_close($mysqli);
 
     echo json_encode($result);
@@ -404,52 +406,43 @@ function addUser($data) {
     $login = $data['login'];
     $password = md5($data['password']);
     $is_admin = 0;
-    $avatar = $data['avatar'];
+    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $tmp_name = $_FILES['avatar']['tmp_name'];
 
-    $sql = "SELECT `login` FROM `user` WHERE `login` = '$login'";
-
-    $result = mysqli_query($mysqli, $sql);
-    if (mysqli_num_rows($result) === 0) {
-
-        $sql = "
-    INSERT INTO `user`(surname, name, patronymic, login, password, is_admin, avatar) 
-    VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin' ,'$avatar')
+    $sql = "
+        INSERT INTO `user`(surname, name, patronymic, login, password, is_admin, avatar) 
+        VALUES ('$surname', '$name', '$patronymic', '$login', '$password', '$is_admin' ,'$avatar')
     ";
 
+    $result = mysqli_query($mysqli, $sql);
 
-        $result = mysqli_query($mysqli, $sql);
+    if ($result) {
+        $response = [
+            'status' => true,
+            'message' => 'Пользователь добавлен',
+            'user_id' => mysqli_insert_id($mysqli)
+        ];
+        http_response_code(201);
 
-        if ($result) {
-            $response = [
-                'status' => true,
-                'message' => 'Пользователь добавлен'
-            ];
-            http_response_code(201);
-        } else {
-            $response = [
-                'status' => false,
-                'message' => '500 error'
-            ];
-            http_response_code(500);
-        }
+        $path = 'uploads' . DIRECTORY_SEPARATOR . $avatar;
 
-        mysqli_close($mysqli);
+        move_uploaded_file($tmp_name, $path);
 
-        echo json_encode($response);
+
+
 
     } else {
-
         $response = [
             'status' => false,
-            'message' => 'Аккаунт с таким логином уже существует'
+            'message' => '500 error'
         ];
-
-        echo json_encode($response);
+        http_response_code(500);
     }
 
 
+    mysqli_close($mysqli);
 
-
+    echo json_encode($response);
 
 }
 
@@ -700,9 +693,11 @@ function getCommentByBookId($id) {
         `comment`.`id` AS comment_id,
         `comment`.`user_id` AS user_id,
         `comment`.`book_id` AS book_id,
+        `comment`.`description` AS comment_description,
         `user`.`surname` AS user_surname,
         `user`.`name` AS user_name,
         `user`.`patronymic` AS user_patronymic,
+        `user`.`avatar` AS user_avatar,
         `book`.`title` AS book_title
     FROM `comment`
     LEFT JOIN 
@@ -827,13 +822,13 @@ function addComment($data) {
     if ($result) {
         $response = [
             'status' => true,
-            'response_code' => 201
+            'message' => 'Комментарий оставлен'
         ];
         http_response_code(201);
     } else {
         $response = [
             'status' => false,
-            'response_code' => 500
+            'message' => 'Не удалось оставить комментарий'
         ];
         http_response_code(500);
     }
@@ -901,7 +896,13 @@ function checkUser($data) {
 
     $mysqli = connect_db();
 
-    $sql = "SELECT * FROM `user`
+    $sql = "SELECT 
+                `id`,
+                `surname`,
+                `name`,
+                `patronymic`,
+                `avatar`
+            FROM `user`
             WHERE 
                 `login` = '$login' AND
                 `password` = '$password'

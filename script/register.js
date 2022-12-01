@@ -1,6 +1,5 @@
 const form_container = document.querySelector('.form-container');
 
-
 const form = form_container.querySelector('#form-register');
 const circles = document.querySelectorAll('.base-circle');
 const lines = document.querySelectorAll('.line');
@@ -8,13 +7,7 @@ const header_register = form_container.querySelector('.form-title');
 let inputs = Array.from(form_container.querySelectorAll('input'));
 let labels = form_container.querySelectorAll('label');
 
-const link_data = {
-    bool_login_check: false
-}
 
-
-
-console.log('file is opened');
 
 function inputFocusEvent() {
     for (let i = 0; i < inputs.length; i++) {
@@ -88,8 +81,8 @@ const forms = [
         `,
     `
             <div class="input-container">
-                <label for="profile_picture" style="display: none">Логин</label>
-                <input type="file" name="profile_picture" id="profile_picture">
+                <label for="avatar" style="display: none">Логин</label>
+                <input type="file" name="avatar" id="avatar">
             </div>
             
             <div class="btn-container">
@@ -119,20 +112,39 @@ formData.append('avatar', '');
 form.onsubmit = (e) => {
     e.preventDefault();
     checkForm();
+    console.log(formData);
     if (step === 2 ) {
 
         if (formData.get('password') === formData.get('password_confirm')) {
             console.log('Пароли соипадают');
             printForm();
         } else {
-            pushNotice('Пароли не совпадают');
+            pushNotice('error','Пароли не совпадают');
         }
     } else if (step === 1) {
-        console.log(checkLogin(formData.get('login'), link_data));
 
-        if (link_data.bool_login_check) {
-            printForm();
+        const checkLogin = async () => {
+            const loginFormData = new FormData();
+
+            loginFormData.append('login', formData.get('login'));
+
+            let res = await fetch('http://practic-book-service/logincheck', {
+                method: 'POST',
+                body: loginFormData
+            });
+            res = await res.json();
+
+            console.log(res);
+
+            if (!res.status) {
+                pushNotice('warning', res.message);
+            } else {
+                printForm();
+            }
         }
+
+        checkLogin();
+
 
     }
     else {
@@ -205,10 +217,10 @@ function checkForm() {
 
         case 3:
             let profile_picture = inputs.find((value) => {
-                return value.getAttribute('name') === 'profile_picture';
+                return value.getAttribute('name') === 'avatar';
             });
-            formData.set('avatar', profile_picture.value);
-            console.log(formData);
+            formData.set('avatar', profile_picture.files[0]);
+
 
             addUser(formData);
 
@@ -248,33 +260,26 @@ async function addUser(formData) {
     });
     res = await res.json();
 
-    if (res.status === true) {
-        window.location.replace('http://practic-book-service');
-    }
+    console.log(res);
 
-}
+    if (res.status) {
 
-async function checkLogin(login, link_data) {
-    'use strict';
-    const loginFormData = new FormData();
-    loginFormData.append('login', login);
+        let user_res = await getUser(res.user_id);
+        user_res = await user_res.json();
+        localStorage.setItem('surname', user_res.surname);
+        localStorage.setItem('name', user_res.name);
+        localStorage.setItem('patronymic', user_res.patronymic);
+        localStorage.setItem('avatar', user_res.avatar);
 
-    let res = await fetch('http://practic-book-service/logincheck', {
-        method: 'POST',
-        body: loginFormData
-    });
-    res = await res.json();
-
-
-
-    if (!res.status) {
-        pushNotice('warning', res.message);
-        link_data.bool_login_check = false;
+        localStorage.setItem('user_id', res.user_id);
+        window.location.replace('http://practic-book-service/index.html');
     } else {
-        link_data.bool_login_check = true;
+        pushNotice('error', res.message)
     }
 
 }
+
+
 
 function pushNotice(type ,message) {
 
@@ -317,5 +322,28 @@ function pushNotice(type ,message) {
 
 
 }
+
+
+
+
+
+async function getUser(id) {
+    try {
+        let res = await fetch(`http://practic-book-service/users/${id}`);
+        res = await res.json();
+
+        if (res.status) {
+
+        } else {
+            pushNotice('error', 'Не удалось загрузить изображение профиля')
+        }
+
+    }
+    catch (error) {
+        pushNotice('error', error);
+    }
+}
+
+
 
 
