@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -314,6 +314,8 @@ function updateAuthor($id, $data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
+    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $tmp_name = $_FILES['avatar']['tmp_name'];
 
     $sql = "
     UPDATE `author`
@@ -321,6 +323,7 @@ function updateAuthor($id, $data) {
         `surname`='$surname',
         `name`='$name',
         `patronymic`='$patronymic'
+        `author_image` = '$avatar',
     WHERE `author`.`id` = '$id';
     ";
     mysqli_query($mysqli,$sql);
@@ -328,8 +331,12 @@ function updateAuthor($id, $data) {
     http_response_code(200);
     $res = [
         "status" => true,
-        "message" => "Author is update"
+        "message" => "Author is updated"
     ];
+
+    $path = 'uploads' . DIRECTORY_SEPARATOR . $avatar;
+    move_uploaded_file($tmp_name, $path);
+
     mysqli_close($mysqli);
 
     echo json_encode($res);

@@ -170,6 +170,41 @@
 <hr>
 
 <section>
+    <h2>Удаление книги</h2>
+
+    <div class="delete_book_main_container">
+        <div class="delete_book_container">
+            <div class="selected_book"></div>
+            <form action="" id="delete_book">
+                <div>
+                    <button type="submit">Удалить</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="delete_book_search">
+            <form action="" method="get">
+                <label for="delete_book_search_input" style="display: none"></label>
+                <input type="search"
+                       name="delete_book_search_input"
+                       id="delete_book_search_input"
+                       placeholder="Поиск книг">
+            </form>
+            <div class="delete_book_search_body">
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</section>
+
+<hr>
+
+<section>
     <h2>Добавить автора</h2>
     <form action="" method="post" enctype="multipart/form-data" id="add_author_form">
 
@@ -201,6 +236,102 @@
     </form>
 
 </section>
+
+<hr>
+
+
+<section>
+    <h2>Изменение автора</h2>
+
+    <div id="update_author_form_container">
+
+        <form action="" method="post" enctype="multipart/form-data" id="update_author_form">
+
+            <div>
+                <label for="author_update_surname">Фамилия</label>
+                <input type="text" id="author_update_surname" name="author_update_surname">
+            </div>
+
+            <div>
+                <label for="author_update_name">Имя</label>
+                <input type="text" id="author_update_name" name="author_update_name">
+            </div>
+
+            <div>
+                <label for="author_update_patronymic">Отчество</label>
+                <input type="text" id="author_update_patronymic" name="author_update_patronymic">
+            </div>
+
+            <div>
+                <label for="author_update_image">Изображение профиля</label>
+                <input type="file" id="author_update_image" name="author_update_image">
+            </div>
+
+
+            <div>
+                <button type="submit">Изменить</button>
+            </div>
+        </form>
+
+
+        <div id="update_author_search_container">
+            <form action="" method="get" id="update_author_search">
+                <label for="search_update_author" style="display: none"></label>
+                <input type="search" name="search_update_author" id="search_update_author" placeholder="Поиск автора">
+            </form>
+            <div id="update_author_search_result">
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+</section>
+
+<hr>
+
+<section>
+    <h2>Удаление автора</h2>
+
+    <div class="delete-author-container">
+
+
+        <div class="delete_author_container">
+            <div class="selected_author">
+
+            </div>
+            <form action="" method="post" id="delete_author_form">
+                <div>
+                    <button type="submit">Удалить</button>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="delete_author_search_container">
+            <form action="" method="get">
+                <label for="delete_author_search_input" style="display: none"></label>
+                <input type="search"
+                       name="delete_author_search_input"
+                       id="delete_author_search_input"
+                       placeholder="Поиск автора">
+            </form>
+            <div class="delete_author_search_container_result">
+
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
+
+<hr>
+
 
 
 
