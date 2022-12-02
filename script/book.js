@@ -43,6 +43,37 @@ form_comment.onsubmit = (e) => {
 
 
 
+const rating_block = document.querySelector('.rating');
+
+async function getRatingByBookId(id) {
+    try {
+        let res = await fetch(`http://practic-book-service/rating/books/${id}`);
+        res = await res.json();
+        console.log(res);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -165,8 +196,14 @@ async function getCommentByBookId(id) {
         let res = await fetch(`http://practic-book-service/comments?book_id=${id}`);
         res = await res.json();
 
-        res.forEach(value => {
-            comment_block.innerHTML += `
+
+        if (res.length > 0) {
+            comment_block.innerHTML = '';
+
+
+
+            res.forEach(value => {
+                comment_block.innerHTML += `
             <div class="comment" data-id="${value.comment_id}">
                 <div class="user-image"><img src="../uploads/${value.user_avatar}" alt=""></div>
                 <div class="comment-body">
@@ -176,10 +213,22 @@ async function getCommentByBookId(id) {
             </div>
             
             `;
-        });
+            });
+        }
+
 
     }
     catch (error) {
         pushNotice('error', 'Не удалось найти комментарии по этой книге');
     }
 }
+
+
+function logOut() {
+    localStorage.clear();
+    window.location.replace('http://practic-book-service/index.html');
+}
+
+
+
+

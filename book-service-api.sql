@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Ноя 30 2022 г., 21:51
+-- Время создания: Дек 02 2022 г., 09:21
 -- Версия сервера: 8.0.31-0ubuntu2
 -- Версия PHP: 8.1.7-1ubuntu3.1
 
@@ -45,7 +45,8 @@ INSERT INTO `author` (`id`, `surname`, `name`, `patronymic`, `author_image`) VAL
 (3, 'Сент-Экзюпери', 'Антуан де ', '', '1669816720антуан-де-сент-экзюпери.webp'),
 (4, 'Оруэлл', 'Джордж', '', '1669817364джордж-оруэлл.webp'),
 (5, 'Булгаков', 'Михаил', 'Афанасьевич', '1669818103михаил-булгаков.webp'),
-(6, 'Брэдбери', 'Рэй', '', '1669818624рэй-бредбери.webp');
+(6, 'Брэдбери', 'Рэй', '', '1669818624рэй-бредбери.webp'),
+(7, 'Уайльд', 'Оскар', '', '1669924412оскар-уайльд.webp');
 
 -- --------------------------------------------------------
 
@@ -91,6 +92,14 @@ CREATE TABLE `comment` (
   `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
+--
+-- Дамп данных таблицы `comment`
+--
+
+INSERT INTO `comment` (`id`, `description`, `user_id`, `book_id`) VALUES
+(1, 'Че за говно', '1', '1'),
+(2, 'Под пиво пойдет', '2', '1');
+
 -- --------------------------------------------------------
 
 --
@@ -116,7 +125,8 @@ INSERT INTO `genre` (`id`, `title`) VALUES
 (7, 'Мистика'),
 (8, 'Фантастика'),
 (9, 'Приключения'),
-(10, 'Художественный вымысел');
+(10, 'Художественный вымысел'),
+(11, 'Антиутопия');
 
 -- --------------------------------------------------------
 
@@ -128,7 +138,7 @@ CREATE TABLE `rating` (
   `id` int UNSIGNED NOT NULL,
   `user_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
   `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `value` int(10) UNSIGNED ZEROFILL NOT NULL
+  `value` int(2) UNSIGNED ZEROFILL NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
@@ -147,6 +157,14 @@ CREATE TABLE `user` (
   `is_admin` tinyint(1) NOT NULL,
   `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'defaut-profile-picture.jpg'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
+
+--
+-- Дамп данных таблицы `user`
+--
+
+INSERT INTO `user` (`id`, `surname`, `name`, `patronymic`, `login`, `password`, `is_admin`, `avatar`) VALUES
+(1, 'Ахметов', 'Руфат', 'Русланович', 'elastars24', 'f46de929282ca7383de6d7816e7d99ad', 0, '1669884578ava.jpeg'),
+(2, 'Дамбинов', 'Дамир', 'Ильдарович', 'dambinov_damir_2004', 'eb0f8720e8e8505f23e8260d74a58a26', 0, '1669896129ava2_1.jpg');
 
 --
 -- Индексы сохранённых таблиц
@@ -202,25 +220,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `author`
 --
 ALTER TABLE `author`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT для таблицы `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `genre`
 --
 ALTER TABLE `genre`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `rating`
@@ -232,7 +250,7 @@ ALTER TABLE `rating`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

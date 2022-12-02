@@ -63,6 +63,7 @@ form_add_author.onsubmit = (e) => {
 
 const form_add_book = document.querySelector('#add_book');
 
+
 getAllGenres();
 getAuthorsAndSelectAdd();
 
@@ -107,12 +108,19 @@ form_add_book.onsubmit = (e) => {
 
 async function getAllGenres() {
     try {
-        const genre_select = form_add_book.querySelector('select#genre_id');
+        const genres = document.querySelector('#genres');
         let res = await fetch('http://practic-book-service/genre');
         res = await res.json();
 
         res.forEach(value => {
-            genre_select.innerHTML += `<option value="${value.id}">${value.title}</option>`
+            genres.innerHTML += `
+            <div>
+                <label for="${value.title}">${value.title}</label>
+                <input type="checkbox" id="${value.title}" name="${value.title}" value="${value.id}">
+            </div>
+                
+    
+            `
         });
 
     }

@@ -13,7 +13,7 @@
 <header>
     <div class="header-container">
         <div>
-            <div class="header-menu"></div>
+            <div class="header-menu" onclick="logOut()"></div>
             <div class="header-logo" onclick="window.location.href = 'http://practic-book-service/index.html'">LOGO</div>
         </div>
 
@@ -38,22 +38,40 @@
 
 <main>
     <div class="main-block">
+
         <div class="book">
             <div class="book-image"><img src="" alt=""></div>
             <h2 class="book-title"></h2>
             <div class="author"><a href=""></a></div>
             <div class="rating"></div>
+
         </div>
         <div class="description">
             <h3 class="description-title">Описание</h3>
             <div class="description-body"></div>
-        </div>
-        <div class="categories">
-            <h3>Жанры</h3>
-            <ul>
+            <div class="categories">
+                <h3>Жанры</h3>
+                <ul>
 
-            </ul>
+                </ul>
+            </div>
+            <div class="user-rating">
+                <h4>Ваша оценка</h4>
+                <div class="user-rating-value">
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                    <div class="star"></div>
+                </div>
+            </div>
         </div>
+
     </div>
 
 
@@ -68,7 +86,7 @@
         </form>
 
         <div class="comments">
-
+            <div class="empty-comment">Комментариев под этой книгой пока нет</div>
         </div>
 
 

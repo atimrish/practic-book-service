@@ -18,3 +18,170 @@ body {
     box-sizing: border-box;
     transition: 0.5s;
 }
+
+.genre-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 700px;
+    height: 300px;
+    overflow: hidden;
+}
+
+.genre-container > * {
+    width: 45%;
+    height: 100%;
+    border: 2px solid #000;
+}
+
+.drag-n-drop-genre-search > form > input {
+    width: 100%;
+    outline: none;
+    height: 40px;
+    font-size: 24px;
+    padding: 5px;
+}
+
+.drag-n-drop-genre-search-body {
+    overflow-y: scroll;
+    height: calc(100% - 40px);
+}
+
+.drag-n-drop-genre-search-body > * {
+    font-size: 20px;
+    padding: 5px 10px;
+
+}
+
+.drag-n-drop-genre-search-body > *:hover {
+    background-color: #D9D9D9;
+}
+
+.drag-n-drop-genre > h3 {
+    margin: 5px;
+    border-bottom: 1px solid black;
+}
+
+.drag-n-drop-genre-body {
+    height: calc(100% - 24px);
+}
+
+.drag-n-drop-genre-body > * {
+    font-size: 20px;
+    padding: 5px 10px;
+}
+
+.drag-n-drop-genre-body > *:hover {
+    background-color: #D9D9D9;
+}
+
+
+
+
+
+
+
+.author-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 700px;
+    height: 300px;
+    margin: 50px 0;
+    overflow: hidden;
+}
+
+.author-container > * {
+    width: 45%;
+    height: 100%;
+    border: 2px solid #000;
+}
+
+.drag-n-drop-author-search > form > input {
+    width: 100%;
+    outline: none;
+    height: 40px;
+    font-size: 24px;
+    padding: 5px;
+}
+
+.drag-n-drop-author-search-body {
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+}
+
+.drag-n-drop-author-search-body > * {
+    font-size: 20px;
+    padding: 5px 10px;
+
+}
+
+.drag-n-drop-author-search-body > *:hover {
+    background-color: #D9D9D9;
+}
+
+.drag-n-drop-author > h3 {
+    margin: 5px;
+    border-bottom: 1px solid black;
+}
+
+.drag-n-drop-author-body {
+    height: calc(100% - 24px);
+}
+
+.drag-n-drop-author-body > * {
+    font-size: 20px;
+    padding: 5px 10px;
+}
+
+.drag-n-drop-author-body > *:hover {
+    background-color: #D9D9D9;
+}
+
+
+section {
+    margin: 50px 0;
+    padding: 0 30px;
+}
+
+.main-book-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+
+.main-book-container > div > form {
+    height: 100%;
+}
+
+.main-book-container > div > form > div {
+    margin: 20px 0;
+}
+
+.main-book-container > div > form > div > label {
+    font-size: 24px;
+}
+
+.main-book-container > div > form > div > textarea {
+    display: block;
+    width: 90%;
+    height: 300px;
+    resize: none;
+}
+
+.main-book-container > div > form > div > input {
+    height: 30px;
+    display: block;
+    font-size: 24px;
+}
+
+.main-book-container > div > form > div > button {
+    height: 40px;
+    padding: 5px 10px;
+    font-size: 24px;
+}
+
+#add_author_form {
+
+}
