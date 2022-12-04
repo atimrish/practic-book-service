@@ -17,6 +17,7 @@ body {
     font-family: 'Inter', sans-serif;
     box-sizing: border-box;
     transition: 0.5s;
+    overflow-x: hidden;
 }
 
 header {
@@ -79,11 +80,12 @@ header {
 
 
 .header-container > .account-block {
-    width: 20%;
+    width: 200px;
 }
 
 .header-container > .account-block > .account-link {
-    text-align: right;
+    text-align: center;
+    display: inline;
 }
 
 
@@ -97,7 +99,6 @@ header {
     color: #FFFFFF;
     font-size: 32px;
     font-weight: 700;
-
 }
 
 
@@ -127,21 +128,20 @@ main {
 .main-block {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: start;
     align-items: start;
     margin-bottom: 150px;
 }
 
 
 .main-block > .book > .book-image {
-    background-color: #D9D9D9;
     width: 400px;
     height: 600px;
 }
 
 .main-block > .book {
     width: 25%;
-    flex-grow: 3;
+    margin: 0 3% 0 5%;
 }
 
 .main-block > .book > .book-image > img {
@@ -149,7 +149,6 @@ main {
 }
 
 .main-block > .description > .description-body {
-    background-color: #D9D9D9;
     width: 100%;
     font-size: 18px;
     line-height: 28px;
@@ -157,7 +156,6 @@ main {
 
 .main-block > .description {
     width: 40%;
-    flex-grow: 2;
 }
 
 .description-body::before {
@@ -217,7 +215,6 @@ img {
 }
 
 .account-block > div > .profile {
-
     height: 50px;
     margin-left: 20px;
     border-radius: 50%;
@@ -233,6 +230,8 @@ img {
 
 .account-block > div > * {
     cursor: pointer;
+    width: 50px;
+    flex-shrink: 0;
 }
 
 img {
@@ -283,9 +282,11 @@ img {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 60%;
+    width: 600px;
     align-items: start;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+    padding: 15px 20px;
+    border-radius: 10px;
 }
 
 .comments > .comment > .user-image {
@@ -293,6 +294,8 @@ img {
     height: 70px;
     border-radius: 50%;
     overflow: hidden;
+    flex-shrink: 0;
+    margin-right: 20px;
 }
 
 .comments > .comment > div {
@@ -300,20 +303,90 @@ img {
 }
 
 .comments > .comment > .comment-body > div {
-    padding: 10px;
-    /*background-color: #e8e8e8;*/
     border-radius: 10px;
-
 }
+
+.comments > .comment > .comment-body {
+    position: relative;
+}
+
 
 .comments > .comment > .comment-body > h3 {
     margin: 0 0 5px 0;
     color: #5D9CEC;
 }
 
+.comment:hover {
+    background-color: #e0e0e0;
+    transition: 0.3s ease;
+}
+
+
 .comments > .empty-comment {
     font-size: 36px;
     color: #D9D9D9;
+}
+
+.comment-buttons {
+    position: relative;
+    top: 0;
+    right: 0;
+    width: 30px!important;
+    height: 30px;
+    border-radius: 10px 10px 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.comment-buttons > ul {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    display: none;
+    font-size: 14px;
+    padding: 0;
+    list-style: none;
+    background-color: inherit;
+    border-radius:  10px 0 10px 10px;
+    overflow: hidden;
+}
+
+.comment-buttons > ul > li {
+    padding: 15px 10px;
+    cursor: pointer;
+}
+
+
+.comment-buttons:hover > ul {
+    display: block;    
+}
+
+
+.comment:hover > .comment-buttons{
+    background-image: url("../images/menu-kebab-vertical-2-svgrepo-com.svg");
+}
+
+.comment-buttons:hover {
+    background-color: #a0a0a2;
+    transition: 0.3s ease;
+}
+
+.update-comment:hover {
+    color: #FFCE54;
+    transition: inherit;
+}
+
+.delete-comment:hover {
+    color: #ED5565;
+    transition: inherit;
+}
+
+
+.comment-description {
+    width: 85%;
+    overflow: hidden;
+    word-wrap: anywhere;
+    padding: 0;
 }
 
 
@@ -321,15 +394,92 @@ img {
 .user-rating-value {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: start;
     align-items: start;
-    width: 400px;
+    width: 70%;
 }
 
 .user-rating-value > .star {
-    width: 50px;
-    height: 50px;
-    background-color: #D9D9D9;
+    width: 70px;
+    height: 70px;
+    font-size: 70px;
     flex-shrink: 0;
+    line-height: 70px;
+    color: #D9D9D9;
+    cursor: pointer;
 }
 
+.categories > ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding: 0;
+}
+
+.categories > ul > li {
+    padding: 5px 10px;
+    background-color: #37BC9B;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.categories > ul > li > a {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+.user-rating-value > .star-checked {
+    color: #FFCE54!important;
+}
+
+.star-hover {
+    color: #a0a0a2!important;
+}
+
+.rating {
+    font-size: 60px;
+}
+
+.rating::after {
+    content: '★';
+    color: #FFCE54;
+    font-size: 80px;
+}
+
+.rating-count {
+    font-size: 24px;
+    color: #C5C5C5;
+    line-height: 50px;
+}
+
+
+#update_comment {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    padding: 5px;
+    caret-color: #37BC9B;
+}
+
+#sign_in_message {
+    color: #C5C5C5;
+    font-size: 24px;
+}
+
+#sign_in_message > a {
+    color: inherit;
+}
+
+.rating-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: end;
+}
+
+.rating-block > * {
+    flex-shrink: 0;
+}

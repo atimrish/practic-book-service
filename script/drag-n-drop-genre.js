@@ -67,6 +67,7 @@ genre_body.ondragover = (e) => {
 genre_body.ondrop = (e) => {
     let itemId = e.dataTransfer.getData('id');
     genre_body.appendChild(document.getElementById(itemId));
+
 };
 
 genreInsertBody.ondrop = (e) => {

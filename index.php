@@ -34,8 +34,17 @@ switch ($method) {
                 case 'books':
                     getBooks();
                     break;
+                case 'popular-books':
+                    getPopularBooks();
+                    break;
+                case 'top-books':
+                    getTopBooks();
+                    break;
                 case 'authors':
                     getAuthors();
+                    break;
+                case 'popular-authors':
+                    getPopularAuthors();
                     break;
                 case 'users':
                     getUsers();
@@ -72,19 +81,22 @@ switch ($method) {
                 case 'users':
                     getUser($id);
                     break;
+                case 'genre':
+                    getGenreById($id);
+                    break;
                 case 'rating':
-                    if (!empty($type) && !empty($id)) {
-                        switch ($type) {
-                            case 'books':
-                                getRatingByBookId($id);
-                                break;
-                            case 'users':
-                                getRatingByUserId($id);
-                                break;
+
+                    $id = $a[1];
+                    if (empty($id)) {
+                        if (!empty($book_id) && !empty($user_id)) {
+                            getRatingByUserAndBookId($user_id, $book_id);
+                        } else if (!empty($book_id)) {
+                            getRatingByBookId($book_id);
+                        } else if (!empty($user_id)) {
+                            getRatingByUserId($user_id);
                         }
-                    } else {
-                        getAllRating();
                     }
+
                     break;
                 case 'comments':
                     $id = $a[1];

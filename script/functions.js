@@ -375,12 +375,8 @@ async function addUser() {
 }
 
 
-async function addRating() {
+async function addRating(formData) {
 
-    let formData = new FormData();
-    formData.append('user_id', '1');
-    formData.append('book_id', '7');
-    formData.append('value', '3');
 
     let res = await fetch('http://practic-book-service/rating', {
         method: 'POST',

@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -48,6 +48,59 @@ function getBooks() {
 
     echo json_encode($result);
 }
+
+function getPopularBooks() {
+    $mysqli = connect_db();
+
+    $sql = "SELECT 
+                `book`.`id` AS book_id,
+                `book`.`author_id` AS author_id,
+                `book`.`title` AS book_title,
+                `book`.`image` AS book_image,
+                COUNT(`rating`.`value`) AS rating_count
+                FROM `book` 
+                LEFT JOIN 
+                    `rating` 
+                        ON `book`.`id` = `rating`.`book_id`
+                GROUP BY book_title, book_image, book_id
+                ORDER BY rating_count DESC
+                LIMIT 10
+            ";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+function getTopBooks() {
+    $mysqli = connect_db();
+
+    $sql = "SELECT 
+            `book`.`id` AS book_id,
+            `book`.`author_id` AS author_id,
+            `book`.`title` AS book_title,
+            `book`.`image` AS book_image,
+            SUM(`rating`.`value`) / COUNT(`rating`.`value`) AS avg_rating_value
+            FROM `book` 
+            JOIN `rating`
+                ON `rating`.`book_id` = `book`.`id`
+                GROUP BY book_title
+                ORDER BY avg_rating_value DESC
+                LIMIT 10
+            ";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+
 
 
 /** Получает книгу из бд по id
@@ -101,7 +154,7 @@ function addBook($data) {
     $year_of_issue = $data['year_of_issue'];
     $author_id = $data['author_id'];
     $genre_id = $data['genre_id'];
-    $image =  isset($_FILES['image']['name']) ? time() . $_FILES['image']['name'] : 'default-profile-picture.jpg';
+    $image =  isset($_FILES['image']['name']) ? time() . $_FILES['image']['name'] : 'default-profile-picture.jpeg';
     $tmp_name = $_FILES['image']['tmp_name'];
 
 
@@ -231,6 +284,36 @@ function getAuthors() {
 }
 
 
+function getPopularAuthors() {
+    $mysqli = connect_db();
+
+    $sql = "
+        SELECT 
+        `author`.`id` AS author_id, 
+        `author`.`surname` AS surname, 
+        `author`.`name` AS name,
+        `author`.`author_image` AS author_image,
+        `author`.`patronymic` AS patronymic, 
+        COUNT(`rating`.`value`) AS count_rating_value 
+        FROM `author`
+            LEFT JOIN `book`
+                ON `book`.`author_id` = `author`.`id`
+            LEFT JOIN `rating` 
+                ON `rating`.`book_id` = `book`.`id` 
+            GROUP BY author_id 
+            ORDER BY count_rating_value DESC 
+            LIMIT 5
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+
 /** Получает автора из бд по его id
  * @param $id
  * @return void
@@ -243,7 +326,7 @@ function getAuthor($id) {
     WHERE `id` = '$id'
     ";
     $result = mysqli_query($mysqli, $sql);
-    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = mysqli_fetch_assoc($result);
     mysqli_close($mysqli);
 
     echo json_encode($result);
@@ -260,7 +343,7 @@ function addAuthor($data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
-    $avatar =  isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $avatar =  isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpeg';
     $tmp_name = $_FILES['avatar']['tmp_name'];
 
 
@@ -314,7 +397,7 @@ function updateAuthor($id, $data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
-    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpeg';
     $tmp_name = $_FILES['avatar']['tmp_name'];
 
     $sql = "
@@ -413,7 +496,7 @@ function addUser($data) {
     $login = $data['login'];
     $password = md5($data['password']);
     $is_admin = 0;
-    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpg';
+    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpeg';
     $tmp_name = $_FILES['avatar']['tmp_name'];
 
     $sql = "
@@ -547,11 +630,14 @@ function getAllRating() {
 function getRatingByBookId($id) {
     $mysqli = connect_db();
     $sql = "
-    SELECT * FROM `rating`
-    WHERE `book_id` = '$id'
+    SELECT 
+        ROUND(SUM(`value`) / COUNT(`value`), 2) AS avg_book_rating,
+        COUNT(`value`) AS rating_count
+    FROM `rating` 
+    WHERE `book_id` = '$id' 
     ";
     $result = mysqli_query($mysqli, $sql);
-    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $result = mysqli_fetch_assoc($result);
     mysqli_close($mysqli);
 
     echo json_encode($result);
@@ -573,6 +659,26 @@ function getRatingByUserId($id) {
 
     echo json_encode($result);
 }
+
+function getRatingByUserAndBookId($user_id, $book_id) {
+    $mysqli = connect_db();
+    $sql = "
+    SELECT * FROM `rating`
+    WHERE 
+        `user_id` = '$user_id' AND 
+        `book_id` = '$book_id'
+    ";
+
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_assoc($result);
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+
+
+
 
 /** Добавление оценки пользователя
  * @param $user_id
@@ -596,13 +702,13 @@ function addRating($data) {
     if ($result) {
         $response = [
             'status' => true,
-            'response_code' => 201
+            'message' => 'Спасибо за оценку'
         ];
         http_response_code(201);
     } else {
         $response = [
             'status' => false,
-            'response_code' => 500
+            'message' => 'Ошибка'
         ];
         http_response_code(500);
     }
@@ -867,7 +973,7 @@ function updateComment($id, $data) {
     http_response_code(200);
     $res = [
         "status" => true,
-        "message" => "Updated comment"
+        "message" => "Комментарий изменен"
     ];
     mysqli_close($mysqli);
 
@@ -889,7 +995,7 @@ function deleteComment($id) {
     mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $response = [
         'status' => true,
-        'message' => 'comment is deleted'
+        'message' => 'Комментарий удален'
     ];
     http_response_code(200);
     mysqli_close($mysqli);
@@ -956,13 +1062,29 @@ function getAllGenres() {
 
     $sql = "SELECT * FROM `genre`";
 
-    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_query($mysqli, $sql);
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+}
+
+function getGenreById($id) {
+    $mysqli = connect_db();
+
+    $sql = "SELECT
+                id,
+                `title` AS genre_title 
+                FROM `genre` 
+                WHERE `id` = '$id'";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_assoc($result);
 
     mysqli_close($mysqli);
 
 
     echo json_encode($result);
 }
-
 

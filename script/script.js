@@ -3,10 +3,10 @@ const books = document.querySelectorAll('.preloader-animation');
 window.onload = () => {
     setTimeout(() => {
             books.forEach(value => value.classList.remove('preloader-animation'));
-            getBooks();
-
-
-
+            getPopularBooks();
+            getTopBooks();
+            getPopularAuthors();
+            getGenres();
         },
         600);
 }
@@ -30,77 +30,25 @@ if (localStorage.getItem('user_id') !== null) {
 }
 
 
-const search_input = document.querySelector('#search');
-const main = document.querySelector('main');
 
-const search_result = document.createElement('div');
-search_result.classList.add('search_result');
-const focus_blur = document.createElement('div');
-focus_blur.classList.add('focus_blur');
-
-search_input.onfocus = () => {
-
-    main.appendChild(focus_blur);
-    main.appendChild(search_result);
-
-
-    search_input.oninput = async () => {
-        let input_value = search_input.value.toLowerCase();
-        search_result.innerHTML = '';
-
-        let res = await fetch('http://practic-book-service/books');
-        res = await res.json();
+const sidebar = document.querySelector('.sidebar > ul');
 
 
 
-        if (input_value !== '') {
+async function getGenres() {
+    let res = await fetch('http://practic-book-service/genre');
+    res = await res.json();
 
-            res.forEach(value => {
-                let full = value.book_title + ' - ' +
-                    value.author_name + ' ' +
-                    value.author_surname + ' ' +
-                    value.author_patronymic;
+    sidebar.innerHTML = '';
 
-                if (full.toLowerCase().match(input_value)) {
+    res.forEach(value => {
+        sidebar.innerHTML +=
+            `
+           <li><a href="${value.id}">${value.title}</a></li>
+           `;
+    });
 
-                    search_result.innerHTML += `
-                <div class="result">
-                    <div class="result-image">
-                        <img src="uploads/${value.book_image}" alt="">
-                    </div>
-                    <div class="result-body">
-                        <div class="book-title">${value.book_title}</div>
-                        <div class="book_author">
-                            ${
-                        value.author_name + ' ' +
-                        value.author_surname + ' ' +
-                        value.author_patronymic
-                    }
-                        </div>
-                    </div>
-                </div>
-                `;
-
-                }
-
-
-            });
-
-        }
-
-
-
-    }
-
-
-
-};
-
-search_input.addEventListener('focusout', () => {
-    search_result.remove();
-    focus_blur.remove();
-});
-
+}
 
 
 
@@ -164,22 +112,39 @@ function pushNotice(type ,message) {
 
 
 
-async function getBooks() {
+async function getPopularBooks() {
     try {
         const popular_book_container = document.querySelector('#popular_book_container');
         popular_book_container.innerHTML = '';
 
-        let res = await fetch('http://practic-book-service/books');
+        let res = await fetch('http://practic-book-service/popular-books');
         res = await res.json();
 
-        res.forEach((value) => {
+        const authors = [];
+
+        for (const author of res) {
+            let author_res = await fetch(`http://practic-book-service/authors/${author.author_id}`);
+            author_res = await author_res.json();
+            let data = {
+                surname: author_res.surname,
+                name: author_res.name,
+                patronymic: author_res.patronymic
+            }
+            authors.push(data);
+        }
+
+
+        res.forEach((value, index) => {
+
+            let full_name = authors[index].name + ' ' + authors[index].surname + ' ' + authors[index].patronymic;
 
             popular_book_container.innerHTML += `
-                        <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.id}'">
+                        <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.book_id}'">
                             <div class="book-image">
                                 <img src="uploads/${value.book_image}" alt="">
                             </div>
                             <div class="book-title">${value.book_title}</div>
+                            <div class="author">${full_name}</div>
                         </div>
             
             `;
@@ -193,6 +158,111 @@ async function getBooks() {
         console.log(error);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+async function getPopularAuthors() {
+
+    let res = await fetch('http://practic-book-service/popular-authors');
+    res = await res.json();
+
+    const popular_author_container = document.querySelector('.popular-author-container');
+    popular_author_container.innerHTML = '';
+
+
+    res.forEach(value => {
+        let full_name = value.name + ' ' + value.surname;
+        popular_author_container.innerHTML +=
+            `
+                    <div class="popular-author" 
+                    onclick="window.location.href = 
+                    'http://practic-book-service/public/author.html?id=${value.author_id}'
+                    ">
+                        <div class="author-image">
+                            <img src="/uploads/${value.author_image}" alt="">
+                        </div>
+                        <div class="author-title">${full_name}</div>
+                        <div class="author-title-bottom">${value.patronymic}</div>
+                    </div>
+            `;
+    });
+
+
+}
+
+
+
+async function getTopBooks() {
+    try {
+        const top_book_container = document.querySelector('#top-book-container');
+        top_book_container.innerHTML = '';
+
+        let res = await fetch('http://practic-book-service/top-books');
+        res = await res.json();
+
+        const authors = [];
+
+        for (const author of res) {
+            let author_res = await fetch(`http://practic-book-service/authors/${author.author_id}`);
+            author_res = await author_res.json();
+            let data = {
+                surname: author_res.surname,
+                name: author_res.name,
+                patronymic: author_res.patronymic
+            }
+            authors.push(data);
+        }
+
+
+
+        res.forEach((value, index) => {
+
+            let full_name = authors[index].name + ' ' + authors[index].surname + ' ' + authors[index].patronymic;
+
+            top_book_container.innerHTML += `
+                        <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.book_id}'">
+                            <div class="book-image">
+                                <img src="uploads/${value.book_image}" alt="">
+                            </div>
+                            <div class="book-title">${value.book_title}</div>
+                            <div class="author">${full_name}</div>
+                        </div>
+            `;
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+
+async function getAuthor(id) {
+    try {
+        let res = await fetch(`http://practic-book-service/authors/${id}`);
+        res = await res.json();
+        console.log(res);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 

@@ -16,6 +16,24 @@ if (localStorage.getItem('user_id') !== null) {
         </div>
     `;
 
+} else {
+    const com = form_comment.parentElement;
+    form_comment.remove();
+
+    com.insertAdjacentHTML("afterbegin", '<div id="sign_in_message"><a href="/public/sign_in.html">Войдите</a>, чтобы оставлять комментарии</div>');
+
+
+}
+
+
+const preloader = document.querySelectorAll('.preloader-animation');
+
+window.onload = () => {
+    setTimeout(() => {
+            preloader.forEach(value => value.classList.remove('preloader-animation'));
+
+        },
+        600);
 }
 
 
@@ -28,28 +46,43 @@ getCommentByBookId(params.id);
 form_comment.onsubmit = (e) => {
     e.preventDefault();
 
-    let comment_value = description.value;
+    let comment_value = description.value.trim();
 
-    const formData = new FormData();
-    formData.append('book_id', params.id);
-    formData.append('user_id', localStorage.getItem('user_id'));
-    formData.append('description', comment_value);
+    if (comment_value !== '') {
+        const formData = new FormData();
+        formData.append('book_id', params.id);
+        formData.append('user_id', localStorage.getItem('user_id'));
+        formData.append('description', comment_value);
 
-    addComment(formData);
-    description.value = '';
+        addComment(formData);
+        description.value = '';
+
+    } else {
+        pushNotice('warning', 'Пустой текст комментария');
+    }
+
+
 
 };
 
 
+getRatingByBookId(params.id);
 
-
-const rating_block = document.querySelector('.rating');
+const rating_block = document.querySelector('.rating-block');
 
 async function getRatingByBookId(id) {
     try {
-        let res = await fetch(`http://practic-book-service/rating/books/${id}`);
+        let res = await fetch(`http://practic-book-service/rating?book_id=${id}`);
         res = await res.json();
-        console.log(res);
+
+        if (res.avg_book_rating !== null) {
+            rating_block.innerHTML = `<div class="rating">${res.avg_book_rating}</div>`;
+            rating_block.innerHTML += `<div class="rating-count">(${res.rating_count})</div>`;
+        } else {
+            rating_block.innerHTML = '<div class="rating">0.00</div>';
+        }
+
+
     }
     catch (error) {
         console.log(error);
@@ -57,15 +90,74 @@ async function getRatingByBookId(id) {
 }
 
 
+const rating_stars_container = document.querySelector('.user-rating-value');
+const rating_stars = document.querySelectorAll('.star');
+
+for (let i = 0; i < rating_stars.length; i++) {
+
+    rating_stars[i].onmouseover = () => {
+        for (let j = 0; j <= i; j++) {
+            rating_stars[j].classList.add('star-hover');
+        }
+    }
+
+    rating_stars[i].onmouseleave = () => {
+        for (let j = 0; j <= i; j++) {
+            rating_stars[j].classList.remove('star-hover');
+        }
+    }
+
+    rating_stars[i].onclick = async () => {
+        for (let j = 0; j <= i; j++) {
+            rating_stars[j].classList.add('star-checked');
+        }
+
+        for (let j = i + 1; j < rating_stars.length; j++) {
+            rating_stars[j].classList.remove('star-checked');
+        }
+
+        let rating_value = rating_stars[i].getAttribute('data-rating-value');
+        rating_stars_container.setAttribute('data-rating-total-value', rating_value);
+
+        let res  = await fetch(`http://practic-book-service/rating?user_id=${localStorage.getItem('user_id')}&book_id=${params.id}`);
+        res = await res.json();
+
+        if (res == null) {
+            const formData = new FormData();
+            formData.append('user_id', localStorage.getItem('user_id'));
+            formData.append('book_id', params.id);
+            formData.append('value', rating_stars_container.getAttribute('data-rating-total-value'));
+
+            await addRating(formData)
+
+            await getRatingByBookId(params.id);
+
+        }
+
+    }
+
+}
 
 
 
 
 
+async function addRating(formData) {
+    let res =
+        await fetch(`http://practic-book-service/rating?user_id=${localStorage.getItem('user_id')}&book_id=${params.id}`,
+{
+        method: 'POST',
+        body: formData
+    });
+    res = await res.json();
 
+    if (res.status) {
+        pushNotice('success', res.message);
+    } else {
+        pushNotice('error', res.message);
+    }
 
-
-
+}
 
 
 
@@ -106,7 +198,18 @@ async function getBook(id) {
     try {
         let res = await fetch(`http://practic-book-service/books/${id}`);
         res = await res.json();
-        console.log(res);
+
+        let genres = res.genre_id.split('/');
+        let genre_names = [];
+
+        for (const genre_id of genres) {
+            let genre_res = await fetch(`http://practic-book-service/genre/${genre_id}`);
+            genre_res = await genre_res.json();
+            genre_names.push({id: genre_res.id, title:genre_res.genre_title});
+        }
+
+
+
 
         const book_image = document.querySelector('.book-image > img');
         const book_title = document.querySelector('.book-title');
@@ -119,7 +222,12 @@ async function getBook(id) {
         description_body.innerText = res.book_description;
         author.innerText = res.author_name + ' ' + res.author_surname;
         author.setAttribute('href', 'author.html?id=' + res.author_id);
-        genre.innerHTML = `<li><a href="${res.genre_id}">${res.genre}</a></li>`;
+
+        genre_names.forEach(value => {
+            genre.innerHTML += `<li><a href="?genre=${value.id}">${value.title}</a></li>`;
+        });
+
+
 
 
     }
@@ -183,6 +291,9 @@ async function addComment(formData) {
 
     if (res.status) {
         pushNotice('success', res.message);
+
+        await getCommentByBookId(params.id);
+
     } else {
         pushNotice('error', res.message);
     }
@@ -196,23 +307,54 @@ async function getCommentByBookId(id) {
         let res = await fetch(`http://practic-book-service/comments?book_id=${id}`);
         res = await res.json();
 
-
         if (res.length > 0) {
             comment_block.innerHTML = '';
 
-
-
             res.forEach(value => {
-                comment_block.innerHTML += `
-            <div class="comment" data-id="${value.comment_id}">
-                <div class="user-image"><img src="../uploads/${value.user_avatar}" alt=""></div>
-                <div class="comment-body">
-                    <h3>${value.user_surname + ' ' + value.user_name}</h3>
-                    <div>${value.comment_description}</div>
+
+                if (value.user_id === localStorage.getItem('user_id')) {
+
+                    comment_block.innerHTML += `
+                <div class="comment" data-id="${value.comment_id}">
+                    <div class="user-image"><img src="../uploads/${value.user_avatar}" alt=""></div>
+                    <div class="comment-body">
+                        <h3>${value.user_surname + ' ' + value.user_name}</h3>
+                        <div class="comment-description">${value.comment_description}</div>
+                        
+                    </div>
+                    
+                    <div class="comment-buttons">
+                        <ul>
+                            <li class="update-comment" onclick="updateComment(${value.comment_id})">Редактировать</li>
+                            <li class="delete-comment" 
+                            onclick="
+                            if(confirm('Подтвердите действие'))
+                            {
+                                deleteComment(${value.comment_id})
+                            }
+                            ">Удалить</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            `;
+                
+                `;
+
+                } else {
+
+                    comment_block.innerHTML += `
+                    <div class="comment" data-id="${value.comment_id}">
+                        <div class="user-image"><img src="../uploads/${value.user_avatar}" alt=""></div>
+                        <div class="comment-body">
+                            <h3>${value.user_surname + ' ' + value.user_name}</h3>
+                            <div class="comment-description">${value.comment_description}</div>
+                            
+                        </div>
+                    </div>
+                    `
+
+                }
+
+
             });
         }
 
@@ -230,5 +372,77 @@ function logOut() {
 }
 
 
+async function deleteComment(id) {
+    try {
+        let res = await fetch(`http://practic-book-service/comments/${id}`, {
+            method: 'DELETE'
+        });
+        res = await res.json();
+
+        if (res.status) {
+            pushNotice('success', res.message);
+        }
+
+    } catch (e) {
+        pushNotice('error', 'Не удалось удалить комментарий');
+        console.log(e);
+    }
+
+}
+
+async function updateComment(id) {
+
+    const comment = comment_block.querySelector(`.comment[data-id="${id}"] > .comment-body > .comment-description`);
+
+    const old_value = comment.innerText;
+
+    comment.innerHTML = `
+    <form action="" method="post">
+    <label for="update_comment" style="display: none"></label>
+    <input id="update_comment" name="update_comment" value="${old_value}">
+    <div class="update-comment-buttons">
+        <button type="submit">Готово</button>
+        <button type="button" class="cancel_update">Отмена</button>
+    </div>
+    </form>
+    
+    `;
+
+    const cancel_update = comment.querySelector('.cancel_update');
+    cancel_update.onclick = () => {
+        comment.innerText = old_value;
+    }
+
+    const form = comment.querySelector('form');
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        let input_value = form.querySelector('input').value;
+
+        let data = {
+            description: input_value
+        }
+
+        try {
+            let res = await fetch(`http://practic-book-service/comments/${id}`, {
+                method: 'PATCH',
+                body: JSON.stringify(data)
+            });
+            res = await res.json();
+
+            if (res.status) {
+                pushNotice('success', res.message);
+
+                await getCommentByBookId(params.id);
+
+            }
+
+        } catch (e) {
+            pushNotice('error', 'Не удалось изменить комментарий');
+            console.log(e);
+        }
 
 
+    }
+
+
+}

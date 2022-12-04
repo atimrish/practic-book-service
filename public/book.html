@@ -8,6 +8,8 @@
     <title>Document</title>
     <link rel="stylesheet" href="../css/book-style.css">
     <link rel="stylesheet" href="../css/notice.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/preloader.css">
 </head>
 <body>
 <header>
@@ -40,34 +42,31 @@
     <div class="main-block">
 
         <div class="book">
-            <div class="book-image"><img src="" alt=""></div>
-            <h2 class="book-title"></h2>
-            <div class="author"><a href=""></a></div>
-            <div class="rating"></div>
+            <div class="book-image preloader-animation"><img src="" alt=""></div>
+            <h2 class="book-title preloader-animation"></h2>
+            <div class="author preloader-animation"><a href=""></a></div>
+            <div class="rating-block preloader-animation">
+
+            </div>
 
         </div>
         <div class="description">
-            <h3 class="description-title">Описание</h3>
-            <div class="description-body"></div>
+            <h3 class="description-title preloader-animation">Описание</h3>
+            <div class="description-body preloader-animation"></div>
             <div class="categories">
-                <h3>Жанры</h3>
-                <ul>
+                <h3 class="preloader-animation">Жанры</h3>
+                <ul class="preloader-animation">
 
                 </ul>
             </div>
             <div class="user-rating">
-                <h4>Ваша оценка</h4>
-                <div class="user-rating-value">
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
-                    <div class="star"></div>
+                <h4 class="preloader-animation">Ваша оценка</h4>
+                <div class="user-rating-value preloader-animation" data-rating-total-value="">
+                    <div class="star" data-rating-value="1">★</div>
+                    <div class="star" data-rating-value="2">★</div>
+                    <div class="star" data-rating-value="3">★</div>
+                    <div class="star" data-rating-value="4">★</div>
+                    <div class="star" data-rating-value="5">★</div>
                 </div>
             </div>
         </div>
@@ -76,7 +75,7 @@
 
 
     <section id="comment-container">
-        <h3>Комментарии</h3>
+        <h3 class="preloader-animation">Комментарии</h3>
         <form action="" id="comment-form" method="post">
             <label for="comment_body" style="display: none"></label>
             <textarea name="comment_body" id="comment_body" cols="30" rows="1" placeholder="Напишите комментарий"></textarea>
@@ -101,6 +100,8 @@
     </div>
 </footer>
 
+
 <script src="../script/book.js"></script>
+<script src="../script/search.js"></script>
 </body>
 </html>

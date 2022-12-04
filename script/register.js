@@ -264,7 +264,7 @@ async function addUser(formData) {
 
     if (res.status) {
 
-        let user_res = await getUser(res.user_id);
+        let user_res = await fetch(`http://practic-book-service/users/${res.user_id}`);
         user_res = await user_res.json();
         localStorage.setItem('surname', user_res.surname);
         localStorage.setItem('name', user_res.name);
@@ -275,6 +275,7 @@ async function addUser(formData) {
         window.location.replace('http://practic-book-service/index.html');
     } else {
         pushNotice('error', res.message)
+
     }
 
 }
@@ -327,22 +328,22 @@ function pushNotice(type ,message) {
 
 
 
-async function getUser(id) {
-    try {
-        let res = await fetch(`http://practic-book-service/users/${id}`);
-        res = await res.json();
-
-        if (res.status) {
-
-        } else {
-            pushNotice('error', 'Не удалось загрузить изображение профиля')
-        }
-
-    }
-    catch (error) {
-        pushNotice('error', error);
-    }
-}
+// async function getUser(id) {
+//     try {
+//         let res = await fetch(`http://practic-book-service/users/${id}`);
+//         res = await res.json();
+//
+//         if (res.status) {
+//
+//         } else {
+//             pushNotice('error', 'Не удалось загрузить изображение профиля')
+//         }
+//
+//     }
+//     catch (error) {
+//         pushNotice('error', error);
+//     }
+// }
 
 
 

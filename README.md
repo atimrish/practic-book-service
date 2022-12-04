@@ -23,8 +23,9 @@
 ### Rating
 * GET http://practic-book-service/rating
 * GET http://practic-book-service/rating/{id}
-* GET http://practic-book-service/rating/books/{id}
-* GET http://practic-book-service/rating/users/{id}
+* GET http://practic-book-service/rating?book_id={id}
+* GET http://practic-book-service/rating?user_id={id}
+* GET http://practic-book-service/rating?user_id={id}&book_id={id}
 * POST http://practic-book-service/rating
 * PATCH http://practic-book-service/rating
 * DELETE http://practic-book-service/rating
