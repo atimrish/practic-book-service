@@ -75,6 +75,9 @@ switch ($method) {
                 case 'books':
                     getBook($id);
                     break;
+                case 'author-books':
+                    getBooksByAuthorId($id);
+                    break;
                 case 'authors':
                     getAuthor($id);
                     break;

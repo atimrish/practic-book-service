@@ -142,6 +142,31 @@ function getBook($id) {
 
 }
 
+function getBooksByAuthorId($id) {
+    $mysqli = connect_db();
+
+    $sql = "
+        SELECT 
+            `author`.`id` AS author_id,
+            `book`.`id` AS book_id,
+            `book`.`title`,
+            `book`.`image`
+        FROM `author`
+        LEFT JOIN `book` 
+            ON `book`.`author_id` = `author`.`id`    
+        WHERE author_id = '$id'    
+    ";
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+
+}
+
+
+
 /** Добавление книги в бд
  * @param array $data
  * @return void

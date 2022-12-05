@@ -1,0 +1,191 @@
+@font-face {
+    font-family: 'Inter';
+    src: url("../fonts/Inter/Inter-VariableFont_slnt,wght.ttf") format('truetype');
+}
+
+* {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    transition: 0.5s;
+    overflow-x: hidden;
+}
+
+header {
+    background-color: #37BC9B;
+    padding: 7px 20px;
+    position: relative;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-container > :nth-child(1) {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+}
+
+.header-container > :nth-child(2) {
+    width: 50%;
+}
+
+.header-container > :nth-child(2) > form > input {
+    width: 100%;
+    height: 50px;
+    font-size: 24px;
+    border-radius: 10px;
+    border: none;
+    padding: 0 30px;
+    outline: none;
+
+}
+
+.header-container > :nth-child(2) > form {
+    position: relative;
+}
+
+
+:focus ::placeholder{
+    color: transparent;
+}
+
+:focus:-moz-placeholder {
+    color: transparent;
+}
+
+:focus::-moz-placeholder {
+    color: transparent;
+}
+
+:focus:-ms-input-placeholder {
+    color: transparent;
+}
+
+
+
+
+.header-container > .account-block {
+    width: 20%;
+}
+
+.header-container > .account-block > .account-link {
+    text-align: right;
+}
+
+
+.header-container > .account-block > .account-link > * {
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+
+.header-logo {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
+    cursor: pointer;
+
+}
+
+
+.header-menu {
+    width: 50px;
+    height: 50px;
+    background-image: url("../images/изображение 2.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+}
+
+.search-img {
+    background-image: url("../images/[removal 1.png");
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: calc(50% - 20px);
+    right: 30px;
+}
+
+
+main {
+    padding: 50px;
+    min-height: calc(100vh - 64px);
+}
+
+.author_block {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.author_image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.author_image > img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.author_title {
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.book_container {
+    display: flex;
+    justify-content: start;
+}
+
+.book {
+    width: 200px;
+    height: 350px;
+    margin: 30px;
+}
+
+.book_image {
+    width: 100%;
+    height: 300px;
+    margin-bottom: 20px;
+}
+
+.book-title {
+    text-align: center;
+}
+
+.footer-container {
+    background-color: #37BC9B;
+    padding: 80px 30px 20px 30px;
+}
+
+.footer-container > .footer-logo {
+    color: #FFFFFF;
+    font-size: 32px;
+    font-weight: 700;
+}

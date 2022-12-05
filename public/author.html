@@ -3,8 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="../css/author.css">
+    <link rel="stylesheet" href="../css/search.css">
+    <link rel="stylesheet" href="../css/preloader.css">
 </head>
 <body>
+<header>
+    <div class="header-container">
+        <div>
+            <div class="header-menu" onclick="logOut()"></div>
+            <div class="header-logo" onclick="window.location.href = 'http://practic-book-service/index.html'">LOGO</div>
+        </div>
 
+        <div>
+            <form action="" method="get">
+                <label for="search" style="display:none;"></label>
+                <input type="search" name="search" id="search" placeholder="Поиск книг, авторов">
+                <div class="search-img"></div>
+            </form>
+        </div>
+
+        <div class="account-block">
+            <div class="account-link">
+                <a href="/public/sign_in.html">Вход</a>
+                <span>/</span>
+                <a href="/public/register.html">Регистрация</a>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<main>
+    <div class="author_block">
+        <div class="author_image preloader-animation"></div>
+        <div class="author_title preloader-animation"></div>
+    </div>
+
+    <h2 class="preloader-animation">Книги от этого автора</h2>
+
+    <div class="book_container">
+
+    </div>
+
+</main>
+
+
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">LOGO</div>
+    </div>
+</footer>
+<script src="../script/author.js"></script>
+<script src="../script/search.js"></script>
 </body>
 </html>

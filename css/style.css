@@ -455,7 +455,7 @@ img {
 li.preloader-animation {
     width: 90%!important;
     height: 30px!important;
-    display: block!important;
-    padding: 0;
-    background-color: #C5C5C5;
+    padding: 0!important;
+    background-color: #C5C5C5!important;
+    display: none!important;
 }

@@ -20,7 +20,6 @@ if (localStorage.getItem('user_id') !== null) {
     account_block.innerHTML =
         `
         <div>
-            <div class="favourite_books"><img src="../images/izobrazhenie-3(1)-transformed%201.png" alt=""></div>
             <div class="profile"><img src="${'uploads/' + localStorage.getItem('avatar')}" 
             onclick="window.location.href = 'http://practic-book-service/public/user.html'" alt="">
             </div>
@@ -118,7 +117,13 @@ async function getPopularBooks() {
         popular_book_container.innerHTML = '';
 
         let res = await fetch('http://practic-book-service/popular-books');
+
+        // res = await res.text();
+        // console.log(res);
+
         res = await res.json();
+
+
 
         const authors = [];
 
