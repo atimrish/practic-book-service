@@ -34,12 +34,12 @@ const forms = [
     `
             <div class="input-container">
                 <label for="surname">Фамилия</label>
-                <input type="text" name="surname" id="surname">
+                <input type="text" name="surname" id="surname" required>
             </div>
 
             <div class="input-container">
                 <label for="name">Имя</label>
-                <input type="text" name="name" id="name">
+                <input type="text" name="name" id="name" required>
             </div>
 
             <div class="input-container">
@@ -55,12 +55,12 @@ const forms = [
     `
             <div class="input-container">
                 <label for="login">Логин</label>
-                <input type="text" name="login" id="login">
+                <input type="text" name="login" id="login" required>
             </div>
 
             <div class="input-container">
                 <label for="password">Пароль</label>
-                <input type="text" name="password" id="password">
+                <input type="text" name="password" id="password" required>
             </div>
 
             <div class="btn-container">
@@ -71,7 +71,7 @@ const forms = [
     `   
             <div class="input-container">
                 <label for="password_confirm" style="display: none">Пароль</label>
-                <input type="text" name="password_confirm" id="password_confirm">
+                <input type="text" name="password_confirm" id="password_confirm" required>
             </div>
 
             <div class="btn-container">
@@ -81,7 +81,7 @@ const forms = [
         `,
     `
             <div class="input-container">
-                <label for="avatar" style="display: none">Логин</label>
+                <label for="avatar" style="display: none">Выбрать</label>
                 <input type="file" name="avatar" id="avatar">
             </div>
             

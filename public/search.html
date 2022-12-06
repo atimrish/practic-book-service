@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/search-page.css">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <div>
+            <div class="header-menu" onclick="logOut()"></div>
+            <div class="header-logo">LOGO</div>
+        </div>
+
+        <div>
+            <form action="" method="get">
+                <label for="search" style="display:none;"></label>
+                <input type="search" name="search" id="search" placeholder="Поиск книг, авторов">
+                <div class="search-img"></div>
+            </form>
+        </div>
+
+        <div class="account-block">
+            <div class="account-link">
+                <a href="/public/sign_in.html">Вход</a>
+                <span>/</span>
+                <a href="/public/register.html">Регистрация</a>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+<main>
+
+    <div class="sidebar">
+
+        <h2>Категории</h2>
+
+        <div class="search-genres">
+            <form action="" method="get">
+                <label for="search_genre" style="display: none"></label>
+                <input type="text" name="search_genre" id="search_genre" placeholder="Поиск жанров">
+            </form>
+            <div class="search-genres-result">
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="main_content">
+        <div class="filters">
+
+        </div>
+
+        <div class="books">
+
+        </div>
+
+    </div>
+
+</main>
+
+<script src="/script/search_page.js"></script>
+</body>
+</html>

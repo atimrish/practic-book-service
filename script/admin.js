@@ -47,6 +47,7 @@ book_add_form.onsubmit = async (e) => {
 
         res = await res.json();
 
+
         if (res.status) {
             pushNotice('success', 'Операция выполнена успешно');
         } else {
@@ -75,6 +76,7 @@ form_add_author.onsubmit = async (e) => {
         body: addAuthorFormData
     });
     res = await res.json();
+
 
     if (res.status) {
         pushNotice('success', 'Операция выполнена успешно');
@@ -262,3 +264,56 @@ delete_book_search_input.oninput = async () => {
 
 
 
+
+
+
+// const update_book_search_container = document.querySelector('.book_search_container');
+// const update_book_search_result = update_book_search_container.querySelector('.update_book_search_result');
+
+
+
+
+
+
+
+
+const user_container = document.querySelector('.user_container');
+const user_search_input = user_container.querySelector('.user_search > form > input');
+const user_search_result = user_container.querySelector('.user_search_result');
+
+user_search_input.oninput = async () => {
+    let input_value = user_search_input.value;
+
+    let res = await fetch(`http://practic-book-service/search-user?like=${input_value}`);
+    res = await res.json();
+
+    user_search_result.innerHTML = '';
+
+    res.forEach(value => {
+        user_search_result.innerHTML += `
+            <div>
+                <div>${value.name + ' ' + value.surname + ' ' + value.patronymic}</div>
+                <button type="button" onclick="banUser(${value.id})">Бан</button>
+            </div>
+        `;
+    });
+
+
+
+}
+
+
+async function banUser(id) {
+
+    let res = await fetch(`http://practic-book-service/ban-user/${id}`, {
+        method: 'PATCH'
+    });
+    res = await res.json();
+
+    if (res.status) {
+        pushNotice('success', res.message);
+    } else {
+        pushNotice('error', 'Не удалось выполнить действие');
+    }
+
+}

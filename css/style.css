@@ -198,10 +198,12 @@ header {
 }
 
 .book-container > .book > .book-title {
-    height: 30px;
+    height: 40px;
     border-radius: 10px;
     text-align: center;
     transition: 0.3s ease;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .book-title:hover {
@@ -408,13 +410,20 @@ img {
 }
 
 .author {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.author > a {
     text-align: center;
     font-size: 14px;
     color: #C5C5C5;
     transition: 0.3s ease;
+    text-decoration: none;
 }
 
-.author:hover {
+.author > a:hover {
     color: #5D9CEC;
 
 }

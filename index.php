@@ -58,6 +58,15 @@ switch ($method) {
                 case 'genre':
                     getAllGenres();
                     break;
+                case 'search':
+                    search();
+                    break;
+                case 'search-with-limit':
+                    searchWithLimit();
+                    break;
+                case 'search-user':
+                    searchUser();
+                    break;
             }
 
 
@@ -78,6 +87,9 @@ switch ($method) {
                 case 'author-books':
                     getBooksByAuthorId($id);
                     break;
+                case 'authors-by-book':
+                    getAuthorByBookId($id);
+                    break;
                 case 'authors':
                     getAuthor($id);
                     break;
@@ -85,7 +97,7 @@ switch ($method) {
                     getUser($id);
                     break;
                 case 'genre':
-                    getGenreById($id);
+                    getGenreByBookId($id);
                     break;
                 case 'rating':
 
@@ -166,6 +178,9 @@ switch ($method) {
                     break;
                 case 'comments':
                     updateComment($id, $data);
+                    break;
+                case 'ban-user':
+                    banUser($id);
                     break;
             }
 

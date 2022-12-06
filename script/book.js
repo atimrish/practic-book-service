@@ -2,6 +2,8 @@ const form_comment = document.querySelector('#comment-form');
 const description = document.querySelector('#comment_body');
 const params = getSearchParams();
 const comment_block = document.querySelector('.comments');
+const rating_stars_container = document.querySelector('.user-rating-value');
+const rating_stars = document.querySelectorAll('.star');
 
 if (localStorage.getItem('user_id') !== null) {
     const account_block = document.querySelector('.account-block');
@@ -18,7 +20,7 @@ if (localStorage.getItem('user_id') !== null) {
 } else {
     const com = form_comment.parentElement;
     form_comment.remove();
-
+    rating_stars_container.innerText = 'Войдите, чтобы оценить книгу';
     com.insertAdjacentHTML("afterbegin", '<div id="sign_in_message"><a href="/public/sign_in.html">Войдите</a>, чтобы оставлять комментарии</div>');
 
 
@@ -30,7 +32,9 @@ const preloader = document.querySelectorAll('.preloader-animation');
 window.onload = () => {
     setTimeout(() => {
             preloader.forEach(value => value.classList.remove('preloader-animation'));
-
+            getBook(params.id);
+            getCommentByBookId(params.id);
+            getRatingStarValue();
         },
         600);
 }
@@ -39,8 +43,7 @@ window.onload = () => {
 
 
 
-getBook(params.id);
-getCommentByBookId(params.id);
+
 
 form_comment.onsubmit = (e) => {
     e.preventDefault();
@@ -89,8 +92,7 @@ async function getRatingByBookId(id) {
 }
 
 
-const rating_stars_container = document.querySelector('.user-rating-value');
-const rating_stars = document.querySelectorAll('.star');
+
 
 for (let i = 0; i < rating_stars.length; i++) {
 
@@ -198,35 +200,40 @@ async function getBook(id) {
         let res = await fetch(`http://practic-book-service/books/${id}`);
         res = await res.json();
 
-        let genres = res.genre_id.split('/');
-        let genre_names = [];
-
-        for (const genre_id of genres) {
-            let genre_res = await fetch(`http://practic-book-service/genre/${genre_id}`);
-            genre_res = await genre_res.json();
-            genre_names.push({id: genre_res.id, title:genre_res.genre_title});
-        }
-
-
-
 
         const book_image = document.querySelector('.book-image > img');
         const book_title = document.querySelector('.book-title');
         const description_body = document.querySelector('.description-body');
-        const author = document.querySelector('.author > a');
+        const author = document.querySelector('.author');
         const genre = document.querySelector('.categories > ul');
 
-        book_image.setAttribute('src', '../uploads/' + res.book_image);
+        book_image.setAttribute('src', '/uploads/' + res.book_image);
         book_title.innerText = res.book_title;
         description_body.innerText = res.book_description;
-        author.innerText = res.author_name + ' ' + res.author_surname;
-        author.setAttribute('href', 'author.html?id=' + res.author_id);
 
-        genre_names.forEach(value => {
+
+
+
+        res = await fetch(`http://practic-book-service/genre/${params.id}`)
+        res = await res.json();
+
+
+        res.forEach(value => {
             genre.innerHTML += `<li><a href="?genre=${value.id}">${value.title}</a></li>`;
         });
 
+        res = await fetch(`http://practic-book-service/authors-by-book/${params.id}`);
+        res = await res.json();
 
+
+        author.innerHTML = '';
+        let full_name = '';
+        res.forEach(value => {
+            full_name = value.author_name + ' ' + value.author_surname + ' ' + value.author_patronymic;
+            author.innerHTML += `
+                <a href="/public/author.html?id=${value.author_id}">${full_name}</a>
+            `;
+        });
 
 
     }
@@ -355,6 +362,10 @@ async function getCommentByBookId(id) {
 
 
             });
+        } else {
+
+            comment_block.innerHTML = '<div class="empty-comment">Комментариев под этой книгой пока нет</div>';
+
         }
 
 
@@ -379,7 +390,9 @@ async function deleteComment(id) {
         res = await res.json();
 
         if (res.status) {
+            console.log(getCommentByBookId(params.id));
             pushNotice('success', res.message);
+
         }
 
     } catch (e) {
@@ -445,3 +458,20 @@ async function updateComment(id) {
 
 
 }
+
+
+
+
+
+
+
+async function getRatingStarValue() {
+    let res =
+        await fetch(`http://practic-book-service/rating?user_id=${localStorage.getItem('user_id')}&book_id=${params.id}`);
+    res = await res.json();
+
+    rating_stars_container.children[res.value - 1].click();
+
+
+}
+

@@ -100,6 +100,117 @@
 <hr>
 
 <section>
+    <h2>Изменить книгу</h2>
+
+    <div class="update_book_container">
+
+        <div class="update_book">
+            <form action="" method="post">
+                <div>
+                    <label for="update_book_title">Название книги</label>
+                    <input type="text" name="update_book_title" id="update_book_title">
+                </div>
+
+                <div>
+                    <label for="update_book_year_of_issue">Год выпуска</label>
+                    <input type="text" name="update_book_year_of_issue" id="update_book_year_of_issue">
+                </div>
+
+                <div>
+                    <label for="update_book_description">Описание</label>
+                    <textarea name="update_book_description" id="update_book_description" cols="30" rows="10"></textarea>
+                </div>
+
+                <div>
+                    <button type="submit">Изменить</button>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+        <div>
+
+            <div class="genre-container">
+
+                <div class="drag-n-drop-genre">
+                    <h3>Жанры</h3>
+                    <div class="drag-n-drop-genre-body update_book_genre_insert_body">
+
+                    </div>
+                </div>
+
+                <div class="drag-n-drop-genre-search">
+                    <form action="" method="get">
+                        <label for="update_genre_search" style="display: none"></label>
+                        <input type="search" placeholder="Введите название жанра" name="genre_search" id="update_genre_search">
+                    </form>
+                    <div class="drag-n-drop-genre-search-body update_book_genre_search_body">
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="author-container">
+                <div class="drag-n-drop-author">
+                    <h3>Авторы</h3>
+                    <div class="drag-n-drop-author-body">
+
+                    </div>
+                </div>
+
+                <div class="drag-n-drop-author-search">
+                    <form action="" method="get">
+                        <label for="update_author_search_drag-n-drop" style="display: none"></label>
+                        <input type="search" placeholder="Введите автора" name="author_search" id="update_author_search_drag-n-drop">
+                    </form>
+                    <div class="drag-n-drop-author-search-body">
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div>
+
+            <div class="book_search_container">
+                <form action="" method="get">
+                    <label for="update_book_search" style="display:none;"></label>
+                    <input
+                            type="search"
+                           name="update_book_search"
+                           id="update_book_search"
+                           placeholder="Введите название книги">
+                </form>
+                <div class="update_book_search_result">
+
+
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+</section>
+
+
+
+<hr>
+
+<section>
     <h2>Удаление книги</h2>
 
     <div class="delete_book_main_container">
@@ -261,6 +372,26 @@
 </section>
 
 <hr>
+
+
+<section>
+
+    <h2>Бан пользователей</h2>
+
+    <div class="user_container">
+        <div class="user_search">
+            <form action="" method="get">
+                <label for="ban_user_search" style="display: none"></label>
+                <input type="search" name="ban_user_search" id="ban_user_search" placeholder="Поиск пользователей">
+            </form>
+        </div>
+        <div class="user_search_result">
+
+        </div>
+
+    </div>
+
+</section>
 
 
 

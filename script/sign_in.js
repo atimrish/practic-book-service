@@ -35,16 +35,35 @@ form.onsubmit = async (e) => {
         });
     res = await res.json();
 
-    if (res.status) {
-        localStorage.setItem('user_id', res.id);
-        localStorage.setItem('surname', res.surname);
-        localStorage.setItem('name', res.name);
-        localStorage.setItem('patronymic', res.patronymic);
-        localStorage.setItem('avatar', res.avatar);
-        window.location.href = 'http://practic-book-service/index.html';
+    console.log(res);
+
+    if (res.is_banned !== '1') {
+
+        if (res.is_admin !== '1') {
+            if (res.status) {
+                localStorage.setItem('user_id', res.id);
+                localStorage.setItem('surname', res.surname);
+                localStorage.setItem('name', res.name);
+                localStorage.setItem('patronymic', res.patronymic);
+                localStorage.setItem('avatar', res.avatar);
+                window.location.replace('http://practic-book-service/index.html');
+            } else {
+                pushNotice('error', res.message);
+            }
+        } else {
+            localStorage.setItem('user_id', res.id);
+            localStorage.setItem('surname', res.surname);
+            localStorage.setItem('name', res.name);
+            localStorage.setItem('patronymic', res.patronymic);
+            localStorage.setItem('avatar', res.avatar);
+            window.location.replace('http://practic-book-service/admin.html');
+        }
+
     } else {
-        pushNotice('error', res.message);
+        pushNotice('warning', 'Ваш аккаунт забанен');
     }
+
+
 
 }
 

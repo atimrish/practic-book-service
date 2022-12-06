@@ -80,9 +80,9 @@ async function getBooksByAuthorId(id) {
             book_container.innerHTML += `
             <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.book_id}'">
                  <div class="book-image">
-                       <img src="/uploads/${value.image}" alt="">
+                       <img src="/uploads/${value.book_image}" alt="">
                  </div>
-                <div class="book-title">${value.title}</div>
+                <div class="book-title">${value.book_title}</div>
             </div>
             
             `;

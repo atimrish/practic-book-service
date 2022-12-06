@@ -16,21 +16,20 @@ search_input.onfocus = () => {
         let input_value = search_input.value.toLowerCase();
         search_result.innerHTML = '';
 
-        let res = await fetch('http://practic-book-service/books');
+        let res = await fetch('http://practic-book-service/search-with-limit?like=' + input_value);
         res = await res.json();
 
+        search_input.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                window.location.href = 'http://practic-book-service/public/search.html?search=' + input_value;
+            }
+        }
 
 
         if (input_value !== '') {
 
             res.forEach(value => {
-                let full = value.book_title + ' - ' +
-                    value.author_name + ' ' +
-                    value.author_surname + ' ' +
-                    value.author_patronymic;
-
-                if (full.toLowerCase().match(input_value)) {
-
                     search_result.innerHTML += `
                 <div class="result" 
                 onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.id}'
@@ -52,9 +51,6 @@ search_input.onfocus = () => {
                     </div>
                 </div>
                 `;
-
-                }
-
 
             });
 

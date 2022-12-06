@@ -117,31 +117,13 @@ async function getPopularBooks() {
         popular_book_container.innerHTML = '';
 
         let res = await fetch('http://practic-book-service/popular-books');
-
-        // res = await res.text();
-        // console.log(res);
-
         res = await res.json();
 
 
 
-        const authors = [];
-
-        for (const author of res) {
-            let author_res = await fetch(`http://practic-book-service/authors/${author.author_id}`);
-            author_res = await author_res.json();
-            let data = {
-                surname: author_res.surname,
-                name: author_res.name,
-                patronymic: author_res.patronymic
-            }
-            authors.push(data);
-        }
 
 
-        res.forEach((value, index) => {
-
-            let full_name = authors[index].name + ' ' + authors[index].surname + ' ' + authors[index].patronymic;
+        res.forEach((value) => {
 
             popular_book_container.innerHTML += `
                         <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.book_id}'">
@@ -149,12 +131,27 @@ async function getPopularBooks() {
                                 <img src="uploads/${value.book_image}" alt="">
                             </div>
                             <div class="book-title">${value.book_title}</div>
-                            <div class="author">${full_name}</div>
+                            <div class="author" data-book-id="${value.book_id}"></div>
                         </div>
             
             `;
 
         });
+
+
+        const authors = popular_book_container.querySelectorAll('.author');
+
+        for (const author of authors) {
+            res = await fetch(`http://practic-book-service/authors-by-book/${author.getAttribute('data-book-id')}`);
+            res = await res.json();
+
+            res.forEach(value => {
+                let full = value.author_name + ' ' + value.author_surname + ' ' + value.author_patronymic;
+                author.innerHTML += `<a href="/public/author.html?id=${value.author_id}">${full}</a>`
+            });
+
+        }
+
 
 
 
@@ -196,8 +193,8 @@ async function getPopularAuthors() {
         let full_name = value.name + ' ' + value.surname;
         popular_author_container.innerHTML +=
             `
-                    <div class="popular-author" 
-                    onclick="window.location.href = 
+                    <div class="popular-author"
+                    onclick="window.location.href =
                     'http://practic-book-service/public/author.html?id=${value.author_id}'
                     ">
                         <div class="author-image">
@@ -222,24 +219,26 @@ async function getTopBooks() {
         let res = await fetch('http://practic-book-service/top-books');
         res = await res.json();
 
-        const authors = [];
+        console.log(res);
 
-        for (const author of res) {
-            let author_res = await fetch(`http://practic-book-service/authors/${author.author_id}`);
-            author_res = await author_res.json();
-            let data = {
-                surname: author_res.surname,
-                name: author_res.name,
-                patronymic: author_res.patronymic
-            }
-            authors.push(data);
-        }
+        // const authors = [];
+        //
+        // for (const author of res) {
+        //     let author_res = await fetch(`http://practic-book-service/authors/${author.author_id}`);
+        //     author_res = await author_res.json();
+        //     let data = {
+        //         surname: author_res.surname,
+        //         name: author_res.name,
+        //         patronymic: author_res.patronymic
+        //     }
+        //     authors.push(data);
+        // }
 
 
 
         res.forEach((value, index) => {
 
-            let full_name = authors[index].name + ' ' + authors[index].surname + ' ' + authors[index].patronymic;
+            // let full_name = authors[index].name + ' ' + authors[index].surname + ' ' + authors[index].patronymic;
 
             top_book_container.innerHTML += `
                         <div class="book" onclick="window.location.href = 'http://practic-book-service/public/book.html?id=${value.book_id}'">
@@ -247,10 +246,30 @@ async function getTopBooks() {
                                 <img src="uploads/${value.book_image}" alt="">
                             </div>
                             <div class="book-title">${value.book_title}</div>
-                            <div class="author">${full_name}</div>
+                            <div class="author" data-book-id="${value.book_id}"></div>
                         </div>
             `;
         });
+
+
+        const authors = top_book_container.querySelectorAll('.author');
+
+        for (const author of authors) {
+            res = await fetch(`http://practic-book-service/authors-by-book/${author.getAttribute('data-book-id')}`);
+            res = await res.json();
+
+            res.forEach(value => {
+                let full = value.author_name + ' ' + value.author_surname + ' ' + value.author_patronymic;
+                author.innerHTML += `<a href="/public/author.html?id=${value.author_id}">${full}</a>`
+            });
+
+        }
+
+
+
+
+
+
     } catch (e) {
         console.log(e);
     }

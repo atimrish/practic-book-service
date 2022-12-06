@@ -65,7 +65,7 @@ input {
     border: 3px solid #37BC9B;
     border-radius: 10px;
     position: relative;
-    padding: 15px 0 10px 10px;
+    padding: 15px 0 5px 10px;
 }
 
 .form-container > form > div > label {
@@ -81,7 +81,7 @@ input {
 }
 
 .form-container > form > div > input {
-    height: 30px;
+    height: 35px;
     padding: 0;
     outline: none;
     font-size: 24px;

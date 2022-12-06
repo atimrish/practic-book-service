@@ -6,6 +6,8 @@ const authorInsertBody = document.querySelector('.drag-n-drop-author-body');
 
 
 insertAuthors();
+insertUpdateBookAuthors();
+
 
 input_author.oninput = async () => {
     author_search_body.innerHTML = '';
@@ -34,7 +36,6 @@ input_author.oninput = async () => {
     for (const author of authors) {
         author.ondragstart = (e) => {
             e.dataTransfer.setData('id', e.target.id);
-            console.log(e.target);
         }
     }
 
@@ -75,9 +76,117 @@ authorInsertBody.ondrop = (e) => {
 
 
 
+const update_book_author_search_body = document.querySelector(
+    '.update_book_container > ' +
+    'div > ' +
+    '.author-container > ' +
+    '.drag-n-drop-author-search > ' +
+    '.drag-n-drop-author-search-body'
+);
+
+
+const update_book_input_author = document.querySelector('#update_author_search_drag-n-drop');
+const update_book_authorInsertBody = document.querySelector('.update_book_container > ' +
+    'div > ' +
+    '.author-container > ' +
+    '.drag-n-drop-author > ' +
+    '.drag-n-drop-author-body'
+);
+
+
+update_book_input_author.oninput = async () => {
+    update_book_author_search_body.innerHTML = '';
+    let search = update_book_input_author.value.toLowerCase();
+
+    let res = await fetch('http://practic-book-service/authors');
+    res = await res.json();
+
+    res.forEach(value => {
+        let fio = value.surname + ' ' + value.name + ' ' + value.patronymic;
+        if (fio.toLowerCase().match(search)) {
+
+            update_book_author_search_body.innerHTML +=
+                `
+                <div id="update-author-${value.id}" data-id="${value.id}" draggable="true">
+                    ${value.surname + ' ' + value.name + ' ' + value.patronymic}
+                </div>
+            `;
+
+        }
+
+    });
+
+    const authors = update_book_author_search_body.children;
+
+    for (const author of authors) {
+        author.ondragstart = (e) => {
+            e.dataTransfer.setData('id', e.target.id);
+        }
+    }
+
+
+}
+
+
+update_book_authorInsertBody.ondragover = (e) => {
+    e.preventDefault();
+}
+
+update_book_author_search_body.ondragover = (e) => {
+    e.preventDefault();
+}
+
+update_book_author_search_body.ondrop = (e) => {
+    let itemId = e.dataTransfer.getData('id');
+    update_book_author_search_body.appendChild(document.getElementById(itemId));
+};
+
+update_book_authorInsertBody.ondrop = (e) => {
+    let itemId = e.dataTransfer.getData('id');
+    update_book_authorInsertBody.appendChild(document.getElementById(itemId));
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+async function insertUpdateBookAuthors() {
+    try {
+        let res = await fetch('http://practic-book-service/authors');
+        res = await res.json();
+
+        update_book_author_search_body.innerHTML = '';
+
+        res.forEach(value => {
+            update_book_author_search_body.innerHTML +=
+                `
+                <div id="update-author-${value.id}" data-id="${value.id}" draggable="true">
+                    ${value.surname + ' ' + value.name + ' ' + value.patronymic}
+                </div>
+            `;
+        });
+
+        const authors = update_book_author_search_body.children;
+
+        for (const author of authors) {
+            author.ondragstart = (e) => {
+                e.dataTransfer.setData('id', e.target.id);
+            }
+        }
+
+
+    } catch (error) {
+        pushNotice('error', error);
+    }
+}
 
 
 
@@ -112,7 +221,6 @@ async function insertAuthors() {
         for (const author of authors) {
             author.ondragstart = (e) => {
                 e.dataTransfer.setData('id', e.target.id);
-                console.log(e.target);
             }
         }
 

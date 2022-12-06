@@ -17,7 +17,7 @@ left_pop_btn.onclick = () => {
 
 right_pop_btn.onclick = () => {
 
-    if (pop_margin_left_value > -50) {
+    if (pop_margin_left_value > -70) {
         pop_margin_left_value -= 15;
         popular_books_container.style.marginLeft = pop_margin_left_value + '%';
     }
@@ -39,7 +39,7 @@ left_best_btn.onclick = () => {
 }
 
 right_best_btn.onclick = () => {
-    if (best_margin_left_value > -50) {
+    if (best_margin_left_value > -70) {
         best_margin_left_value -= 15;
         best_rating_books_container.style.marginLeft = best_margin_left_value + '%';
     }

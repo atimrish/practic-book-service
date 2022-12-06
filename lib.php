@@ -26,19 +26,7 @@ function getBooks() {
                 `book`.`image` AS book_image,
                 `book`.`description` AS book_description,
                 `book`.`year_of_issue` AS book_year_of_issue,
-                `book`.`author_id`,
-                `book`.`genre_id`,
-                `author`.`surname` AS author_surname,
-                `author`.`name` AS author_name,
-                `author`.`patronymic` AS author_patronymic,
-                `genre`.`title` AS genre
-                FROM `book` 
-                LEFT JOIN 
-                    `author`
-                        ON `author`.`id` = `book`.`author_id` 
-                LEFT JOIN 
-                    `genre` 
-                        ON `genre`.`id` = `book`.`genre_id`
+                FROM `book`  
             ";
 
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
@@ -54,7 +42,6 @@ function getPopularBooks() {
 
     $sql = "SELECT 
                 `book`.`id` AS book_id,
-                `book`.`author_id` AS author_id,
                 `book`.`title` AS book_title,
                 `book`.`image` AS book_image,
                 COUNT(`rating`.`value`) AS rating_count
@@ -80,7 +67,6 @@ function getTopBooks() {
 
     $sql = "SELECT 
             `book`.`id` AS book_id,
-            `book`.`author_id` AS author_id,
             `book`.`title` AS book_title,
             `book`.`image` AS book_image,
             SUM(`rating`.`value`) / COUNT(`rating`.`value`) AS avg_rating_value
@@ -116,20 +102,9 @@ function getBook($id) {
                 `book`.`title` AS book_title,
                 `book`.`image` AS book_image,
                 `book`.`description` AS book_description,
-                `book`.`year_of_issue` AS book_year_of_issue,
-                `book`.`author_id`,
-                `book`.`genre_id`,
-                `author`.`surname` AS author_surname,
-                `author`.`name` AS author_name,
-                `author`.`patronymic` AS author_patronymic,
-                `genre`.`title` AS genre
+                `book`.`year_of_issue` AS book_year_of_issue
                 FROM `book` 
-                LEFT JOIN 
-                    `author`
-                        ON `author`.`id` = `book`.`author_id` 
-                LEFT JOIN 
-                    `genre` 
-                        ON `genre`.`id` = `book`.`genre_id`
+                
                 WHERE `book`.`id` = '$id'
     ";
 
@@ -147,14 +122,16 @@ function getBooksByAuthorId($id) {
 
     $sql = "
         SELECT 
-            `author`.`id` AS author_id,
-            `book`.`id` AS book_id,
-            `book`.`title`,
-            `book`.`image`
-        FROM `author`
-        LEFT JOIN `book` 
-            ON `book`.`author_id` = `author`.`id`    
-        WHERE author_id = '$id'    
+	`book_author`.`author_id` AS author_id,
+    `book_author`.`book_id` AS book_id,
+    `book`.`title` AS book_title,
+    `book`.`image` AS book_image,
+    `book`.`description` AS book_description,
+    `book`.`year_of_issue` AS book_year_of_issue
+	FROM `book_author`
+    LEFT JOIN `book` ON `book_author`.`book_id` = `book`.`id`
+    LEFT JOIN `author` ON `book_author`.`author_id` = `author`.`id`
+    WHERE author_id = '$id'    
     ";
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -177,18 +154,45 @@ function addBook($data) {
     $title = $data['title'];
     $description = $data['description'];
     $year_of_issue = $data['year_of_issue'];
-    $author_id = $data['author_id'];
-    $genre_id = $data['genre_id'];
+    $authors = explode('/', $data['author_id']);
+    $genres = explode('/', $data['genre_id']);
     $image =  isset($_FILES['image']['name']) ? time() . $_FILES['image']['name'] : 'default-profile-picture.jpeg';
     $tmp_name = $_FILES['image']['tmp_name'];
 
 
+
     $sql = "
-    INSERT INTO `book`(title, image, description, year_of_issue, author_id, genre_id)
-    VALUES ('$title', '$image', '$description', '$year_of_issue', '$author_id', '$genre_id');
+    INSERT INTO `book`(title, image, description, year_of_issue)
+    VALUES ('$title', '$image', '$description', '$year_of_issue');
     ";
 
+    mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+
+    $book_id = mysqli_insert_id($mysqli);
+
+    $sql = "
+            INSERT INTO `book_author`(book_id, author_id) 
+            VALUES('$book_id', '$authors[0]')
+            ";
+
+    for ($i = 1; $i < count($authors); $i++) {
+        $sql .= ", ('$book_id', '$authors[$i]')";
+    }
+    mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+
+
+    $sql = "
+            INSERT INTO `book_genre`(book_id, genre_id)
+            VALUES ('$book_id', '$genres[0]')
+    ";
+
+    for ($i = 1; $i < count($genres); $i++) {
+        $sql .= ", ('$book_id', '$genres[$i]')";
+    }
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+
+
+
 
     if ($result) {
         $response = [
@@ -197,9 +201,11 @@ function addBook($data) {
         ];
         http_response_code(201);
 
-        $path = 'uploads' . DIRECTORY_SEPARATOR . $image;
+        if ($image !== 'default-profile-picture.jpeg') {
+            $path = 'uploads' . DIRECTORY_SEPARATOR . $image;
 
-        move_uploaded_file($tmp_name, $path);
+            move_uploaded_file($tmp_name, $path);
+        }
 
 
     } else {
@@ -259,8 +265,6 @@ function updateBook($id, $data) {
     $image = $data['image'];
     $description = $data['description'];
     $year_of_issue = $data['year_of_issue'];
-    $author_id = $data['author_id'];
-    $genre_id = $data['genre_id'];
 
     $sql = "
     UPDATE `book`
@@ -268,9 +272,7 @@ function updateBook($id, $data) {
         `title`='$title',
         `image`='$image',
         `description`='$description',
-        `year_of_issue`='$year_of_issue',
-        `author_id`='$author_id',
-        `genre_id`='$genre_id' 
+        `year_of_issue`='$year_of_issue'
     WHERE `book`.`id` = '$id';
     
     ";
@@ -320,9 +322,11 @@ function getPopularAuthors() {
         `author`.`author_image` AS author_image,
         `author`.`patronymic` AS patronymic, 
         COUNT(`rating`.`value`) AS count_rating_value 
-        FROM `author`
+        FROM `book_author`
+            LEFT JOIN `author`
+                ON `book_author`.`author_id` = `author`.`id`
             LEFT JOIN `book`
-                ON `book`.`author_id` = `author`.`id`
+                ON `book_author`.`book_id` = `book`.`id`
             LEFT JOIN `rating` 
                 ON `rating`.`book_id` = `book`.`id` 
             GROUP BY author_id 
@@ -343,13 +347,40 @@ function getPopularAuthors() {
  * @param $id
  * @return void
  */
+function getAuthorByBookId($id) {
+    $mysqli = connect_db();
+
+    $sql = "
+    SELECT 
+	`book_author`.`book_id` AS book_id,
+    `book_author`.`author_id` AS author_id,
+    `author`.`surname` AS author_surname,
+    `author`.`name` AS author_name,
+    `author`.`patronymic` AS author_patronymic,
+    `author`.`author_image` AS author_image
+	FROM `book_author`
+    LEFT JOIN `author` ON `book_author`.`author_id` = `author`.`id`
+    LEFT JOIN `book` ON `book_author`.`book_id` = `book`.`id`
+    WHERE book_id = '$id'
+    ";
+    $result = mysqli_query($mysqli, $sql);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    mysqli_close($mysqli);
+
+    echo json_encode($result);
+
+}
+
 function getAuthor($id) {
     $mysqli = connect_db();
 
     $sql = "
-    SELECT * FROM `author`
+    SELECT 
+	*
+	FROM `author`
     WHERE `id` = '$id'
     ";
+
     $result = mysqli_query($mysqli, $sql);
     $result = mysqli_fetch_assoc($result);
     mysqli_close($mysqli);
@@ -357,6 +388,8 @@ function getAuthor($id) {
     echo json_encode($result);
 
 }
+
+
 
 /** Добавление автора в бд
  * @param $data
@@ -1039,7 +1072,9 @@ function checkUser($data) {
                 `surname`,
                 `name`,
                 `patronymic`,
-                `avatar`
+                `avatar`,
+                `is_admin`,
+                `is_banned`
             FROM `user`
             WHERE 
                 `login` = '$login' AND
@@ -1095,17 +1130,20 @@ function getAllGenres() {
     echo json_encode($result);
 }
 
-function getGenreById($id) {
+function getGenreByBookId($id) {
     $mysqli = connect_db();
 
-    $sql = "SELECT
-                id,
-                `title` AS genre_title 
-                FROM `genre` 
-                WHERE `id` = '$id'";
+    $sql = "
+    SELECT 
+        `genre`.`id`,
+	    `genre`.`title` 
+        FROM `book_genre`
+        LEFT JOIN `genre` ON `book_genre`.`genre_id` = `genre`.`id`
+        WHERE `book_genre`.`book_id` = '$id'
+    ";
 
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
-    $result = mysqli_fetch_assoc($result);
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
     mysqli_close($mysqli);
 
@@ -1113,3 +1151,117 @@ function getGenreById($id) {
     echo json_encode($result);
 }
 
+
+function searchWithLimit() {
+    $like = $_GET['like'];
+
+    $mysqli = connect_db();
+
+    $sql = "
+    SELECT 
+    `book_author`.`book_id` AS id,    
+	`book`.`title` AS book_title,
+    `book`.`image` AS book_image,
+    `author`.`surname` AS author_surname,
+    `author`.`name` AS author_name,
+    `author`.`patronymic` AS author_patronymic
+    FROM `book_author`
+    LEFT JOIN `book` ON `book_author`.`book_id` = `book`.`id`
+    LEFT JOIN `author` ON `book_author`.`author_id` = `author`.`id`
+    WHERE CONCAT_WS(' ', `book`.`title`, `author`.`surname`, `author`.`name`, `author`.`patronymic`) LIKE '%$like%'
+    LIMIT 10
+    ";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+
+    echo json_encode($result);
+
+}
+
+function search() {
+
+    $like = $_GET['like'];
+    $params = $_GET['params'];
+    $params = explode('/', $params);
+
+
+
+    $mysqli = connect_db();
+
+
+    $sql = "
+    SELECT 
+    `book_author`.`book_id` AS id,   
+	`book`.`title` AS book_title,
+    `book`.`image` AS book_image
+    FROM `book_author`
+    LEFT JOIN `book` ON `book_author`.`book_id` = `book`.`id`
+    LEFT JOIN `author` ON `book_author`.`author_id` = `author`.`id`
+    LEFT JOIN `book_genre` ON `book_author`.`book_id` = `book_genre`.`book_id`
+    WHERE CONCAT_WS(' ', `book`.`title`, `author`.`surname`, `author`.`name`, `author`.`patronymic`) LIKE '%$like%'
+    ";
+
+    for ($i = 0; $i < count($params); $i++) {
+        $sql .= "AND `book_genre`.`genre_id` = $params[$i] ";
+    }
+
+    $sql .= "GROUP BY book_title";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+
+    echo json_encode($result);
+}
+
+
+function searchUser() {
+    $like = $_GET['like'];
+
+    $mysqli = connect_db();
+
+    $sql = "
+    SELECT 
+    `id`,   
+    `surname`,
+    `name`,
+    `patronymic`
+    FROM `user`
+    WHERE CONCAT_WS(' ', `name`, `surname`, `patronymic`) LIKE '%$like%'
+    ";
+
+    $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+    $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    mysqli_close($mysqli);
+
+
+    echo json_encode($result);
+}
+
+
+function banUser($id) {
+    $mysqli = connect_db();
+    $sql = "
+    UPDATE `user`
+    SET
+        `is_banned` = 1
+    WHERE `user`.`id` = '$id';
+    ";
+    mysqli_query($mysqli,$sql);
+
+    http_response_code(200);
+    $res = [
+        "status" => true,
+        "message" => "Пользователь забанен"
+    ];
+    mysqli_close($mysqli);
+
+    echo json_encode($res);
+}
