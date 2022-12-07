@@ -15,7 +15,7 @@ if (params.params !== '') {
 
 
 search_input.oninput = async () => {
-     searchWithParams();
+     await searchWithParams();
 }
 
 
@@ -115,6 +115,8 @@ async function searchWithParams(add_param = '') {
     for (const author of authors) {
         res = await fetch(`http://practic-book-service/authors-by-book/${author.getAttribute('data-book-id')}`);
         res = await res.json();
+
+        console.log(res);
 
         res.forEach(value => {
             let full = value.author_name + ' ' + value.author_surname + ' ' + value.author_patronymic;

@@ -218,8 +218,9 @@ main {
 .book_title {
     overflow: hidden;
     text-overflow: ellipsis;
-    height: 40px;
+    height: 30px;
     text-align: center;
+    margin-top: 20px;
 }
 
 .book_image {
@@ -238,7 +239,6 @@ img {
     display: flex;
     justify-content: center;
     flex-direction: column;
-    margin-top: 10px;
 }
 
 .author > a {

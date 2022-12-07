@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root';
+const PASSWORD = 'root1234';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -1214,19 +1214,41 @@ function search() {
     FROM `book_author`
     LEFT JOIN `book` ON `book_author`.`book_id` = `book`.`id`
     LEFT JOIN `author` ON `book_author`.`author_id` = `author`.`id`
-    LEFT JOIN `book_genre` ON `book_author`.`book_id` = `book_genre`.`book_id`
-    WHERE CONCAT_WS(' ', `book`.`title`, `author`.`surname`, `author`.`name`, `author`.`patronymic`) LIKE '%$like%'
+    WHERE 
     ";
 
     if ($params[0] !== '') {
-        for ($i = 0; $i < count($params); $i++) {
-            $sql .= "AND `book_genre`.`genre_id` = $params[$i] ";
+
+        $sql .= "
+            `book`.`id` = ANY 
+            (
+                SELECT 
+                `book_id` 
+                FROM `book_genre` 
+                WHERE `genre_id` = $params[0]
+            )
+        ";
+
+        for ($i = 1; $i < count($params); $i++) {
+            $sql .= "  
+            AND `book`.`id` = ANY 
+            (
+                SELECT 
+                `book_id` 
+                FROM `book_genre` 
+                WHERE `genre_id` = $params[$i]
+            )
+            
+            ";
         }
+
+        $sql .= " AND ";
     }
 
-
+    $sql .= " CONCAT_WS(' ', `book`.`title`, `author`.`surname`, `author`.`name`, `author`.`patronymic`) LIKE '%$like%'";
 
     $sql .= " GROUP BY book_title";
+
 
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
