@@ -34,7 +34,7 @@
 
                 <div>
                     <label for="image">Изображение</label>
-                    <input type="file" name="image" id="image">
+                    <input type="file" name="image" id="image" accept="image/*">
                 </div>
 
                 <div>
@@ -131,7 +131,7 @@
         </div>
 
 
-        <div>
+        <div style="display: none">
 
             <div class="genre-container">
 
@@ -304,12 +304,6 @@
             </div>
 
             <div>
-                <label for="author_update_image">Изображение профиля</label>
-                <input type="file" id="author_update_image" name="author_update_image">
-            </div>
-
-
-            <div>
                 <button type="submit">Изменить</button>
             </div>
         </form>
@@ -394,6 +388,36 @@
 </section>
 
 
+<hr>
+
+
+<section>
+    <h2>Удаление комментариев</h2>
+    <div class="delete_comment_container">
+        <form action="" method="get">
+            <label for="search_comment" style="display: none"></label>
+            <input type="text" name="search_comment" id="search_comment">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Пользователь</th>
+                    <th>Комментарий</th>
+                    <th>Оставлен под книгой</th>
+                    <th>Удалить</th>
+                </tr>
+            </thead>
+            <tbody class="search_comment_result">
+
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+</section>
 
 
 <script src="script/drag-n-drop-genre.js"></script>

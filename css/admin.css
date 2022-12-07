@@ -398,3 +398,40 @@ section {
     width: 100px;
     font-size: 20px;
 }
+
+.update_book_search_result > div {
+    padding: 10px;
+    font-size: 20px;
+}
+
+.update_book_search_result > div:hover {
+    background-color: #D9D9D9;
+}
+
+.book_search_container {
+    width: 600px;
+}
+
+form > input {
+    width: 100%;
+}
+
+.delete_comment_container {
+    width: 700px;
+}
+
+.search_comment_result {
+    height: 600px;
+    overflow-y: scroll;
+}
+
+.search_comment_result > div {
+    padding: 10px;
+    font-size: 20px;
+}
+
+
+.search_comment_result > div:hover {
+    background-color: #D9D9D9;
+}
+

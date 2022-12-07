@@ -3,6 +3,38 @@ const search_genre_input = search_genres_container.querySelector('form > input')
 const search_genres_result =  search_genres_container.querySelector('.search-genres-result');
 const filters = document.querySelector('.filters');
 const books = document.querySelector('.books');
+const params = getSearchParams();
+const search_input  = document.querySelector('#search');
+
+
+if (params.params !== '') {
+    searchWithParams(params.genre);
+
+}
+
+
+
+search_input.oninput = async () => {
+     searchWithParams();
+}
+
+
+
+if (localStorage.getItem('user_id') !== null) {
+
+    const account_block = document.querySelector('.account-block');
+
+    account_block.innerHTML =
+        `
+        <div>
+            <div class="profile"><img src="${'/uploads/' + localStorage.getItem('avatar')}" 
+            onclick="window.location.href = 'http://practic-book-service/public/user.html'" alt="">
+            </div>
+        </div>
+    `;
+
+}
+
 
 
 search_genre_input.oninput = async () => {
@@ -42,8 +74,12 @@ search_genre_input.oninput = async () => {
 }
 
 
-async function searchWithParams() {
+async function searchWithParams(add_param = '') {
     let params = [];
+
+    if (add_param !== '') {
+        params.push(add_param);
+    }
 
     let filters = document.querySelector('.filters').children;
 
@@ -89,4 +125,67 @@ async function searchWithParams() {
 
 
 }
+
+function logOut() {
+    localStorage.clear();
+    window.location.replace('http://practic-book-service/index.html');
+}
+
+
+function pushNotice(type ,message) {
+
+    const notice = document.createElement('div');
+
+    switch (type) {
+        case 'warning':
+            notice.classList.add('push-notice-warning');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-warning">!</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'success':
+            notice.classList.add('push-notice-success');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-success">V</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'error':
+            notice.classList.add('push-notice-error');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-error">X</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+        case 'info':
+            notice.classList.add('push-notice-info');
+            notice.classList.add('push-notice-animation');
+            notice.innerHTML = `<div class="notice-icon-info">i</div>
+            <div class="notice-body">${message}</div>`;
+            break;
+    }
+
+
+
+    document.body.appendChild(notice);
+
+    setTimeout(() => {
+        notice.remove();
+    }, 4800);
+
+
+}
+
+
+function getSearchParams() {
+    let search = window.location.search.substring(1);
+    let new_search = {};
+    search = search.split('&');
+
+    for (let i = 0; i < search.length; i++) {
+        search[i] = search[i].split('=');
+        new_search[search[i][0]] = search[i][1];
+    }
+
+    return new_search;
+}
+
 

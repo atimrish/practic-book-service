@@ -180,7 +180,7 @@ switch ($method) {
                     updateComment($id, $data);
                     break;
                 case 'ban-user':
-                    banUser($id);
+                    banUser($id, $data);
                     break;
             }
 

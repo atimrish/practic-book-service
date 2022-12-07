@@ -219,7 +219,7 @@ async function getBook(id) {
 
 
         res.forEach(value => {
-            genre.innerHTML += `<li><a href="?genre=${value.id}">${value.title}</a></li>`;
+            genre.innerHTML += `<li><a href="/public/search.html?genre=${value.id}">${value.title}</a></li>`;
         });
 
         res = await fetch(`http://practic-book-service/authors-by-book/${params.id}`);

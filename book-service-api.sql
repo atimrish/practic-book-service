@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.4deb1
+-- version 5.1.3
 -- https://www.phpmyadmin.net/
 --
--- Хост: localhost:3306
--- Время создания: Дек 07 2022 г., 00:58
--- Версия сервера: 8.0.31-0ubuntu2
--- Версия PHP: 8.1.7-1ubuntu3.1
+-- Хост: 127.0.0.1:3306
+-- Время создания: Дек 07 2022 г., 12:49
+-- Версия сервера: 8.0.29
+-- Версия PHP: 8.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `author` (
   `id` int UNSIGNED NOT NULL,
-  `surname` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `name` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `patronymic` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `author_image` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'defaut-profile-picture.jpg'
+  `surname` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `patronymic` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `author_image` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL DEFAULT 'defaut-profile-picture.jpg'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
@@ -51,7 +51,8 @@ INSERT INTO `author` (`id`, `surname`, `name`, `patronymic`, `author_image`) VAL
 (9, 'Веселко', 'Никита', '', 'default-profile-picture.jpeg'),
 (10, 'Прохоренок', 'Н.', '', 'default-profile-picture.jpeg'),
 (11, 'Дронов', 'В.', '', 'default-profile-picture.jpeg'),
-(12, 'Траск', 'Э.', '', 'default-profile-picture.jpeg');
+(12, 'Траск', 'Э.', '', 'default-profile-picture.jpeg'),
+(14, 'asdsdas', 'adsasdsa', 'asdasdsa', 'default-profile-picture.jpeg');
 
 -- --------------------------------------------------------
 
@@ -61,10 +62,10 @@ INSERT INTO `author` (`id`, `surname`, `name`, `patronymic`, `author_image`) VAL
 
 CREATE TABLE `book` (
   `id` int UNSIGNED NOT NULL,
-  `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `image` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `year_of_issue` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
+  `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `year_of_issue` varchar(4) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
@@ -81,7 +82,7 @@ INSERT INTO `book` (`id`, `title`, `image`, `description`, `year_of_issue`) VALU
 (7, 'Вино из одуванчиков', '1670337240вино-из-одуванчиков.webp', 'Войдите в светлый мир двенадцатилетнего мальчика и проживите с ним одно лето, наполненное событиями радостными и печальными, загадочными и тревожными; лето, когда каждый день совершаются удивительные открытия, главное из которых — ты живой, ты дышишь, ты чувствуешь!\r\n\r\n«Вино из одуванчиков» Рэя Брэдбери — классическое произведение, вошедшее в «золотой фонд» мировой литературы.\r\n\r\nСтарики — мудрецы, постигшие жизнь. Дети — мудрецы, постигающие жизнь. Богатый мир детей вбирает в себя всё, от кузнечиков до магии, которая у Рэя Брэдбери реально действует.\r\n\r\nДети любят бояться. Они постоянно ищут приключения на свою голову, шатаясь по Оврагу в неурочный час. После фильма ужасов возвращаются через Овраг (воплощение зла, почти живое существо) и не хотят, чтобы их город превратился в идеальный мир «ванильный творожок».\r\n\r\nОни постигают жизнь и законы бытия и собираются жить вечно (ну или почти).', '1957'),
 (8, 'Программирование в Unreal Engine 5 для начинающего игродела. Основы визуального языка Blueprint', '1670339037ue5.webp', 'Перед вами пособие по основам программирования и разработки компьютерных игр в новейшей версии игрового движка Unreal Engine 5.\r\n\r\n• Освойте структуру и логике UE 5.\r\n\r\n• Овладейте игровой средой разработки.\r\n\r\n• Изучите основы алгоритмозации.\r\n\r\n• Используйте язык визуального программирования Blueprint.\r\n\r\n• Создавайте сложную механику без кода.\r\n\r\n• Научитесь вершинам игровой визуализации с помощью возможностей движка.\r\n\r\nРуководство подойдет тем, кто только делает первые шаги в программировании и не знает, с чего начать карьеру в индустрии игр. Оно представляет из себя расширенное пособие, основанное на лекционных и практических материалах дисциплины «Разработка игр на Unreal Engine», которая преподается авторами на факультете компьютерных наук научно-исследовательского университета «Высшая школа экономики».', '2022'),
 (9, 'Python 3 ', '1670339615питон.webp', 'Описан базовый синтаксис языка Python 3: типы данных, операторы, условия, циклы, регулярные выражения, встроенные функции, объектно-ориентированное программирование, обработка исключений, часто используемые модули стандартной библиотеки и установка дополнительных модулей. Даны основы SQLite, описан интерфейс доступа к базам данных SQLite и MySQL, в том числе посредством ODBC. Рассмотрена работа с изображениями с помощью библиотек Pillow и Wand, получение данных из Интернета и использование архивов различных форматов. Книга содержит более двухсот практических примеров, помогающих начать программировать на языке Python самостоятельно. Весь материал тщательно подобран, хорошо структурирован и компактно изложен, что позволяет использовать книгу как удобный справочник. .Во втором издании описана актуальная версия Python - 3.6.4, добавлены описания утилиты pip, работы с данными в формате JSON, библиотеки Tkinter и разработки оконных приложений с ее помощью, реализации параллельного программирования и использования потоков для выполнения программного кода. .Электронное приложение-архив, доступное на сайте издательства, содержит листинги описанных в книге примеров. .2-е издание, переработанное и дополненное.', '2019'),
-(10, 'Грокаем глубокое обучение ', '16703397545cf91dfd308a585f46d629540c37db7b.webp', 'Глубокое обучение — это раздел искусственного интеллекта, цель которого научить компьютеры обучаться с помощью нейронных сетей — технологии, созданной по образу и подобию человеческого мозга. Онлайн-переводчики, беспилотные автомобили, рекомендации по выбору товаров именно для вас и виртуальные голосовые помощники — вот лишь несколько достижений, которые стали возможны, благодаря глубокому обучению.\r\n\r\n\"Грокаем глубокое обучение\" научит конструировать нейронные сети с нуля! Эндрю Траск знакомит со всеми деталями и тонкостями этой нелегкой задачи. Python и библиотека NumPy способны научить ваши нейронные сети видеть и распознавать изображения, переводить любые тексты на все языки мира и даже писать не хуже Шекспира!\r\n\r\nЧто вы найдете внутри книги\r\n\r\n∙ Теоретические основы глубокого обучения\r\n\r\n∙ Приемы создания и обучения нейронных сетей\r\n\r\n∙ Работа с естественным языком\r\n\r\n∙ Федеративное обучение и работа с конфиденциальными данными\r\n\r\nВам не понадобятся специальные навыки, выходящие за рамки школьного курса математики и базовых навыков программирования', '2019');
+(10, 'Грокаем глубокое обучение ', '16703397545cf91dfd308a585f46d629540c37db7b.webp', 'Глубокое обучение — это раздел искусственного интеллекта, цель которого научить компьютеры обучаться с помощью нейронных сетей — технологии, созданной по образу и подобию человеческого мозга. Онлайн-переводчики, беспилотные автомобили, рекомендации по выбору товаров именно для вас и виртуальные голосовые помощники — вот лишь несколько достижений, которые стали возможны, благодаря глубокому обучению.\n\n', '2020');
 
 -- --------------------------------------------------------
 
@@ -164,9 +165,9 @@ INSERT INTO `book_genre` (`book_id`, `genre_id`) VALUES
 
 CREATE TABLE `comment` (
   `id` int UNSIGNED NOT NULL,
-  `description` text CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `user_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
+  `description` text CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `user_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
@@ -186,7 +187,7 @@ INSERT INTO `comment` (`id`, `description`, `user_id`, `book_id`) VALUES
 
 CREATE TABLE `genre` (
   `id` int UNSIGNED NOT NULL,
-  `title` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL
+  `title` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
 --
@@ -254,8 +255,8 @@ INSERT INTO `genre` (`id`, `title`) VALUES
 
 CREATE TABLE `rating` (
   `id` int UNSIGNED NOT NULL,
-  `user_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `user_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `book_id` varchar(10) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
   `value` int(1) UNSIGNED ZEROFILL NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
@@ -299,13 +300,13 @@ INSERT INTO `rating` (`id`, `user_id`, `book_id`, `value`) VALUES
 
 CREATE TABLE `user` (
   `id` int UNSIGNED NOT NULL,
-  `surname` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `name` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `patronymic` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `login` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `surname` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `patronymic` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `login` varchar(40) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
-  `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL DEFAULT 'defaut-profile-picture.jpg',
+  `avatar` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8_general_ci NOT NULL DEFAULT 'defaut-profile-picture.jpg',
   `is_banned` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3;
 
@@ -314,7 +315,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `surname`, `name`, `patronymic`, `login`, `password`, `is_admin`, `avatar`, `is_banned`) VALUES
-(1, 'Ахметов', 'Руфат', 'Русланович', 'elastars24', 'f46de929282ca7383de6d7816e7d99ad', 0, '1669884578ava.jpeg', 1),
+(1, 'Ахметов', 'Руфат', 'Русланович', 'elastars24', 'f46de929282ca7383de6d7816e7d99ad', 0, '1669884578ava.jpeg', 0),
 (2, 'Дамбинов', 'Дамир', 'Ильдарович', 'dambinov_damir_2004', 'eb0f8720e8e8505f23e8260d74a58a26', 0, '1669896129ava2_1.jpg', 0),
 (5, 'Умнов', 'Илья', 'Евгеневич', 'ilya2009', '77e807e863c34ce3fddf2a29c09c59d2', 1, '1670154409ava3.jpg', 0),
 (6, 'Wer', 'Ter', 'Der', 'wer', '22c276a05aa7c90566ae2175bcc2a9b0', 0, '1670348249ava4.jpg', 0),
@@ -386,19 +387,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT для таблицы `author`
 --
 ALTER TABLE `author`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT для таблицы `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT для таблицы `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT для таблицы `genre`

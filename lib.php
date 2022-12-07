@@ -2,7 +2,7 @@
 
 const HOST = 'localhost';
 const USERNAME = 'root';
-const PASSWORD = 'root1234';
+const PASSWORD = 'root';
 const DB_NAME = 'book-service-api';
 
 /** Подключение к бд
@@ -25,7 +25,7 @@ function getBooks() {
                 `book`.`title` AS book_title,
                 `book`.`image` AS book_image,
                 `book`.`description` AS book_description,
-                `book`.`year_of_issue` AS book_year_of_issue,
+                `book`.`year_of_issue` AS book_year_of_issue
                 FROM `book`  
             ";
 
@@ -237,10 +237,25 @@ function deleteBook($id) {
     ";
 
     mysqli_query($mysqli, $sql);
+
+    $sql = "
+    DELETE FROM `book_author`
+    WHERE `book_id` = '$id'
+    ";
+
+    mysqli_query($mysqli, $sql);
+
+    $sql = "
+    DELETE FROM `book_genre`
+    WHERE `book_id` = '$id'
+    ";
+
+    mysqli_query($mysqli, $sql);
+
     $response = [
 
         'status' => true,
-        'response_code' => 200
+        'message' => 'Книга удалена'
 
     ];
 
@@ -262,7 +277,6 @@ function updateBook($id, $data) {
     $mysqli = connect_db();
 
     $title = $data['title'];
-    $image = $data['image'];
     $description = $data['description'];
     $year_of_issue = $data['year_of_issue'];
 
@@ -270,7 +284,6 @@ function updateBook($id, $data) {
     UPDATE `book`
     SET
         `title`='$title',
-        `image`='$image',
         `description`='$description',
         `year_of_issue`='$year_of_issue'
     WHERE `book`.`id` = '$id';
@@ -282,7 +295,7 @@ function updateBook($id, $data) {
     http_response_code(200);
     $res = [
         "status" => true,
-        "message" => "Post is update"
+        "message" => "Книга изменена"
     ];
 
     mysqli_close($mysqli);
@@ -455,8 +468,8 @@ function updateAuthor($id, $data) {
     $surname = $data['surname'];
     $name = $data['name'];
     $patronymic = $data['patronymic'];
-    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpeg';
-    $tmp_name = $_FILES['avatar']['tmp_name'];
+//    $avatar = isset($_FILES['avatar']['name']) ? time() . $_FILES['avatar']['name'] : 'default-profile-picture.jpeg';
+//    $tmp_name = $_FILES['avatar']['tmp_name'];
 
     $sql = "
     UPDATE `author`
@@ -464,7 +477,6 @@ function updateAuthor($id, $data) {
         `surname`='$surname',
         `name`='$name',
         `patronymic`='$patronymic'
-        `author_image` = '$avatar',
     WHERE `author`.`id` = '$id';
     ";
     mysqli_query($mysqli,$sql);
@@ -472,11 +484,11 @@ function updateAuthor($id, $data) {
     http_response_code(200);
     $res = [
         "status" => true,
-        "message" => "Author is updated"
+        "message" => "Автор изменен"
     ];
 
-    $path = 'uploads' . DIRECTORY_SEPARATOR . $avatar;
-    move_uploaded_file($tmp_name, $path);
+//    $path = 'uploads' . DIRECTORY_SEPARATOR . $avatar;
+//    move_uploaded_file($tmp_name, $path);
 
     mysqli_close($mysqli);
 
@@ -499,7 +511,7 @@ function deleteAuthor($id) {
 
     $response = [
         'status' => true,
-        'response_code' => 200
+        'message' => 'Автор удален'
     ];
 
     http_response_code(200);
@@ -836,6 +848,7 @@ function getComments() {
         `comment`.`id` AS comment_id,
         `comment`.`user_id` AS user_id,
         `comment`.`book_id` AS book_id,
+        `comment`.`description` AS comment_description,
         `user`.`surname` AS user_surname,
         `user`.`name` AS user_name,
         `user`.`patronymic` AS user_patronymic,
@@ -1205,11 +1218,15 @@ function search() {
     WHERE CONCAT_WS(' ', `book`.`title`, `author`.`surname`, `author`.`name`, `author`.`patronymic`) LIKE '%$like%'
     ";
 
-    for ($i = 0; $i < count($params); $i++) {
-        $sql .= "AND `book_genre`.`genre_id` = $params[$i] ";
+    if ($params[0] !== '') {
+        for ($i = 0; $i < count($params); $i++) {
+            $sql .= "AND `book_genre`.`genre_id` = $params[$i] ";
+        }
     }
 
-    $sql .= "GROUP BY book_title";
+
+
+    $sql .= " GROUP BY book_title";
 
     $result = mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
     $result = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -1231,7 +1248,8 @@ function searchUser() {
     `id`,   
     `surname`,
     `name`,
-    `patronymic`
+    `patronymic`,
+    `is_banned`
     FROM `user`
     WHERE CONCAT_WS(' ', `name`, `surname`, `patronymic`) LIKE '%$like%'
     ";
@@ -1246,12 +1264,13 @@ function searchUser() {
 }
 
 
-function banUser($id) {
+function banUser($id, $data) {
+    $ban = $data['ban'];
     $mysqli = connect_db();
     $sql = "
     UPDATE `user`
     SET
-        `is_banned` = 1
+        `is_banned` = $ban
     WHERE `user`.`id` = '$id';
     ";
     mysqli_query($mysqli,$sql);

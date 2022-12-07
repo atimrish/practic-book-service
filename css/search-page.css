@@ -247,4 +247,29 @@ img {
     text-align: center;
 }
 
+.account-block > div > .favourite_books {
+    height: 50px;
+}
+
+.account-block > div > .profile {
+    width: 50px;
+    height: 50px;
+    margin-left: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.account-block > div {
+    display: flex;
+    justify-content: end;
+}
+
+
+.account-block > div > .profile > img {
+    object-fit: cover;
+    object-position: center;
+}
+
+
+
 

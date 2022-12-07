@@ -82,7 +82,7 @@ const forms = [
     `
             <div class="input-container">
                 <label for="avatar" style="display: none">Выбрать</label>
-                <input type="file" name="avatar" id="avatar">
+                <input type="file" name="avatar" id="avatar" accept="image/*">
             </div>
             
             <div class="btn-container">
