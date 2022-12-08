@@ -43,7 +43,7 @@ async function getGenres() {
     res.forEach(value => {
         sidebar.innerHTML +=
             `
-           <li><a href="/public/search.html?params=${value.id}">${value.title}</a></li>
+           <li><a href="/public/search.html?genre=${value.id}">${value.title}</a></li>
            `;
     });
 
