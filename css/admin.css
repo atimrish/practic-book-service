@@ -19,6 +19,11 @@ body {
     transition: 0.5s;
 }
 
+#add_genre_form > div > input {
+    display: block;
+}
+
+
 .genre-container {
     display: flex;
     flex-direction: row;

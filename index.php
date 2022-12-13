@@ -157,6 +157,9 @@ switch ($method) {
             case 'logincheck':
                 checkLogin($_POST);
                 break;
+            case 'genre':
+                addGenre($_POST);
+                break;
         }
         break;
 

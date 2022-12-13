@@ -538,4 +538,27 @@ async function deleteComment(id) {
 
 
 
+const add_genre_form = document.querySelector('#add_genre_form');
+
+add_genre_form.onsubmit = async (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('title', add_genre_form.querySelector('#add_genre').value);
+
+    let res = await fetch('http://practic-book-service/genre', {
+        method: 'POST',
+        body: formData
+    });
+
+    res = await res.json();
+
+    if (res.status) {
+        pushNotice('success', res.message);
+    } else {
+        pushNotice('error', res.message);
+    }
+
+}
+
+
 

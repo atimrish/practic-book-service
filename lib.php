@@ -1306,3 +1306,45 @@ function banUser($id, $data) {
 
     echo json_encode($res);
 }
+
+
+function addGenre($data) {
+    $mysqli = connect_db();
+
+    $title = $data['title'];
+
+    $sql = "
+        SELECT 
+            `title` 
+            FROM `genre`
+            WHERE `title` = '$title';
+        ";
+
+    $result = mysqli_query($mysqli, $sql);
+
+    
+    if (mysqli_num_rows($result) === 0) {
+
+        $sql = "
+            INSERT INTO `genre`(title)
+            VALUES ('$title')
+        ";
+
+        mysqli_query($mysqli, $sql) or die(mysqli_error($mysqli));
+
+        $res = [
+            'status' => true,
+            'message' => 'Жанр добавлен'
+        ];
+
+    } else {
+        $res = [
+          'status' => false,
+          'message' => 'Такой жанр уже существует'
+        ];
+    }
+
+    echo json_encode($res);
+}
+
+
